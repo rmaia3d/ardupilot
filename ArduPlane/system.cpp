@@ -164,6 +164,12 @@ void Plane::init_ardupilot()
 #if AC_PRECLAND_ENABLED
     g2.precland.init(scheduler.get_loop_rate_hz());
 #endif
+
+#if AP_RADAR_ENABLED
+    if (radar.enabled()) {
+        radar.init(-1);
+    }
+#endif
 }
 
 #if AP_FENCE_ENABLED
