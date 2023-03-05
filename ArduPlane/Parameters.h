@@ -367,7 +367,10 @@ public:
         k_param_flight_mode10,
         k_param_flight_mode11,
         k_param_flight_mode12,
-        k_param_flight_modes_extended,
+        k_param_flight_modes_extended,     
+
+        // Inav radar (formation flight)
+        k_param_radar,
     };
 
     AP_Int16 format_version;
