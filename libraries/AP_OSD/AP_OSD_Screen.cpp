@@ -1066,12 +1066,12 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Param: CRSFPWR_X
     // @DisplayName: CRSFPWR_X
     // @Description: Horizontal position on screen
-    // @Range: 0 29
+    // @Range: 0 59
 
     // @Param: CRSFPWR_Y
     // @DisplayName: CRSFPWR_Y
     // @Description: Vertical position on screen
-    // @Range: 0 15
+    // @Range: 0 21
     AP_SUBGROUPINFO(crsf_tx_power, "CRSFPWR", 55, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: CRSFRSSI_EN
@@ -1082,12 +1082,12 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Param: CRSFRSSI_X
     // @DisplayName: CRSFRSSI_X
     // @Description: Horizontal position on screen
-    // @Range: 0 29
+    // @Range: 0 59
 
     // @Param: CRSFRSSI_Y
     // @DisplayName: CRSFRSSI_Y
     // @Description: Vertical position on screen
-    // @Range: 0 15
+    // @Range: 0 21
     AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSFRSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: CRSFSNR_EN
@@ -1098,12 +1098,12 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Param: CRSFSNR_X
     // @DisplayName: CRSFSNR_X
     // @Description: Horizontal position on screen
-    // @Range: 0 29
+    // @Range: 0 59
 
     // @Param: CRSFSNR_Y
     // @DisplayName: CRSFSNR_Y
     // @Description: Vertical position on screen
-    // @Range: 0 15
+    // @Range: 0 21
     AP_SUBGROUPINFO(crsf_snr, "CRSFSNR", 53, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: CRSFANT_EN
@@ -1114,13 +1114,29 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Param: CRSFANT_X
     // @DisplayName: CRSFANT_X
     // @Description: Horizontal position on screen
-    // @Range: 0 29
+    // @Range: 0 59
 
     // @Param: CRSFANT_Y
     // @DisplayName: CRSFANT_Y
     // @Description: Vertical position on screen
-    // @Range: 0 15
+    // @Range: 0 21
     AP_SUBGROUPINFO(crsf_active_antenna, "CRSFANT", 52, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: CRSFLQ_EN
+    // @DisplayName: CRSFLQ_EN
+    // @Description: Displays the CRSF linq quality (uplink, 0 to 100%)
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: CRSFLQ_X
+    // @DisplayName: CRSFLQ_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: CRSFLQ_Y
+    // @DisplayName: CRSFLQ_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
+    AP_SUBGROUPINFO(crsf_lq, "CRSFLQ", 56, AP_OSD_Screen, AP_OSD_Setting),
 
     AP_GROUPEND
 };
@@ -1982,6 +1998,16 @@ void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
     }
 }
 
+void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
+{
+    const int16_t lqv = AP::crsf()->get_link_status().link_quality;            
+    if (lqv < 0) {
+        backend->write(x, y, false, "%c--", SYMBOL(SYM_LQ));
+    } else {
+        backend->write(x, y, false, "%c%2d", SYMBOL(SYM_LQ), lqv);
+    }
+}
+
 void AP_OSD_Screen::draw_gps_latitude(uint8_t x, uint8_t y)
 {
     AP_GPS & gps = AP::gps();
@@ -2421,6 +2447,7 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(crsf_rssi_dbm);
     DRAW_SETTING(crsf_snr);
     DRAW_SETTING(crsf_active_antenna);
+    DRAW_SETTING(crsf_lq);
 }
 #endif
 #endif // OSD_ENABLED
