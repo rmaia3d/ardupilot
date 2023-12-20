@@ -40,6 +40,8 @@
 #include <AP_Terrain/AP_Terrain.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_Vehicle/AP_Vehicle.h>
+#include <AP_RPM/AP_RPM.h>
+#include <AP_RCProtocol/AP_RCProtocol_CRSF.h>
 #if APM_BUILD_TYPE(APM_BUILD_Rover)
 #include <AP_WindVane/AP_WindVane.h>
 #endif
@@ -1055,6 +1057,71 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @User: Standard
     AP_GROUPINFO("FONT", 4, AP_OSD_Screen, font_index, 0),
 #endif
+
+    // @Param: CRSFPWR_EN
+    // @DisplayName: CRSFPWR_EN
+    // @Description: Displays the TX power when using the CRSF RC protocol
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: CRSFPWR_X
+    // @DisplayName: CRSFPWR_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 29
+
+    // @Param: CRSFPWR_Y
+    // @DisplayName: CRSFPWR_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 15
+    AP_SUBGROUPINFO(crsf_tx_power, "CRSFPWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: CRSFRSSI_EN
+    // @DisplayName: CRSFRSSI_EN
+    // @Description: Displays RC signal strength in dBm for CRSF
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: CRSFRSSI_X
+    // @DisplayName: CRSFRSSI_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 29
+
+    // @Param: CRSFRSSI_Y
+    // @DisplayName: CRSFRSSI_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 15
+    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSFRSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: CRSFSNR_EN
+    // @DisplayName: CRSFSNR_EN
+    // @Description: Displays RC signal to noise ratio in dB for CRSF
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: CRSFSNR_X
+    // @DisplayName: CRSFSNR_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 29
+
+    // @Param: CRSFSNR_Y
+    // @DisplayName: CRSFSNR_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 15
+    AP_SUBGROUPINFO(crsf_snr, "CRSFSNR", 53, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: CRSFANT_EN
+    // @DisplayName: CRSFANT_EN
+    // @Description: Displays the current active antenna for CRSF
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: CRSFANT_X
+    // @DisplayName: CRSFANT_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 29
+
+    // @Param: CRSFANT_Y
+    // @DisplayName: CRSFANT_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 15
+    AP_SUBGROUPINFO(crsf_active_antenna, "CRSFANT", 52, AP_OSD_Screen, AP_OSD_Setting),
+
     AP_GROUPEND
 };
 
@@ -1858,6 +1925,63 @@ void AP_OSD_Screen::draw_esc_amps(uint8_t x, uint8_t y)
 }
 #endif
 
+void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink)
+{
+    if (value > 0) {
+        if (value < 1000) {
+            backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));
+        } else {
+            const float value_w = float(value) * 0.001f;
+            backend->write(x, y, false, "%.2f%c", value_w, 'W');
+        }
+    } else {
+        backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));
+    }
+}
+
+void AP_OSD_Screen::draw_crsf_tx_power(uint8_t x, uint8_t y)
+{
+    const int16_t tx_power = AP::crsf()->get_link_status().tx_power;
+    draw_tx_power(x, y, tx_power);
+}
+
+void AP_OSD_Screen::draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink)
+{
+    if (value >= 0) {
+        backend->write(x, y, blink, "%4d%c%c%c", -value, 'D', 'B', 'M');
+    } else {
+        backend->write(x, y, blink, "----DBM");
+    }
+}
+
+void AP_OSD_Screen::draw_crsf_rssi_dbm(uint8_t x, uint8_t y)
+{
+    const int8_t rssidbm = AP::crsf()->get_link_status().rssi_dbm;
+    const bool blink = -rssidbm < osd->warn_rssi;
+    backend->write(x, y, blink, "%c", SYMBOL(SYM_RSSI));
+    draw_rssi_dbm(x+1, y, rssidbm, blink);
+}
+
+void AP_OSD_Screen::draw_crsf_snr(uint8_t x, uint8_t y)
+{
+    const int8_t snr = AP::crsf()->get_link_status().snr;
+    if (snr == INT8_MIN) {
+        backend->write(x, y, false, "SNR---DB");
+    } else {
+        backend->write(x, y, false, "SNR%3d%c%c", snr, 'D', 'B');
+    }
+}
+
+void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
+{
+    const int8_t active_antenna = AP::crsf()->get_link_status().active_antenna;
+    if (active_antenna < 0) {
+        backend->write(x, y, false, "ANT-");
+    } else {
+        backend->write(x, y, false, "ANT%d", active_antenna + 1);
+    }
+}
+
 void AP_OSD_Screen::draw_gps_latitude(uint8_t x, uint8_t y)
 {
     AP_GPS & gps = AP::gps();
@@ -2292,6 +2416,11 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(eff);
     DRAW_SETTING(callsign);
     DRAW_SETTING(current2);
+
+    DRAW_SETTING(crsf_tx_power);
+    DRAW_SETTING(crsf_rssi_dbm);
+    DRAW_SETTING(crsf_snr);
+    DRAW_SETTING(crsf_active_antenna);
 }
 #endif
 #endif // OSD_ENABLED

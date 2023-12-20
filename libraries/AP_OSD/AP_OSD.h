@@ -221,6 +221,12 @@ private:
 #endif
     AP_OSD_Setting sidebars{false, 4, 5};
 
+    //CRSF style link stats
+    AP_OSD_Setting crsf_tx_power{false, 0, 0};
+    AP_OSD_Setting crsf_rssi_dbm{false, 0, 0};
+    AP_OSD_Setting crsf_snr{false, 0, 0};
+    AP_OSD_Setting crsf_active_antenna{false, 0, 0};
+
     // MSP OSD only
     AP_OSD_Setting crosshair;
     AP_OSD_Setting home_dist{true, 1, 1};
@@ -305,6 +311,14 @@ private:
     void draw_fence(uint8_t x, uint8_t y);
 #endif
     void draw_rngf(uint8_t x, uint8_t y);
+
+    // CRSF style linkstats
+    void draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink = false);
+    void draw_crsf_tx_power(uint8_t x, uint8_t y);
+    void draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink = false);
+    void draw_crsf_rssi_dbm(uint8_t x, uint8_t y);
+    void draw_crsf_snr(uint8_t x, uint8_t y);
+    void draw_crsf_active_antenna(uint8_t x, uint8_t y);
 
     struct {
         bool load_attempted;
