@@ -226,6 +226,7 @@ private:
     AP_OSD_Setting crsf_rssi_dbm{false, 0, 0};
     AP_OSD_Setting crsf_snr{false, 0, 0};
     AP_OSD_Setting crsf_active_antenna{false, 0, 0};
+    AP_OSD_Setting crsf_lq{false, 0, 0};
 
     // MSP OSD only
     AP_OSD_Setting crosshair;
@@ -319,6 +320,7 @@ private:
     void draw_crsf_rssi_dbm(uint8_t x, uint8_t y);
     void draw_crsf_snr(uint8_t x, uint8_t y);
     void draw_crsf_active_antenna(uint8_t x, uint8_t y);
+    void draw_crsf_lq(uint8_t x, uint8_t y);
 
     struct {
         bool load_attempted;
