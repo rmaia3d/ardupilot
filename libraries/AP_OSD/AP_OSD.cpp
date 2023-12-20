@@ -37,6 +37,7 @@
 #include <AP_Terrain/AP_Terrain.h>
 #include <AP_RSSI/AP_RSSI.h>
 #include <GCS_MAVLink/GCS.h>
+#include <AP_RCProtocol/AP_RCProtocol_CRSF.h>
 
 // macro for easy use of var_info2
 #define AP_SUBGROUPINFO2(element, name, idx, thisclazz, elclazz) { name, AP_VAROFFSET(thisclazz, element), { group_info : elclazz::var_info2 }, AP_PARAM_FLAG_NESTED_OFFSET, idx, AP_PARAM_GROUP }
@@ -114,8 +115,8 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
 
     // @Param: _W_RSSI
     // @DisplayName: RSSI warn level (in %)
-    // @Description: Set level at which RSSI item will flash
-    // @Range: 0 99
+    // @Description: Set level at which RSSI item will flash (% for the percentage element or -dBm for the dBm element)
+    // @Range: -128 99
     // @User: Standard
     AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, 30),
 
