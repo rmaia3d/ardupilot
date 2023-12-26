@@ -531,6 +531,8 @@ public:
     AP_Int8 h_offset;
 
     AP_Int8 warn_rssi;
+    AP_Int8 warn_lq;
+    AP_Int8 warn_snr;
     AP_Int8 warn_nsat;
     AP_Int32 warn_terr;
     AP_Float warn_avgcellvolt;

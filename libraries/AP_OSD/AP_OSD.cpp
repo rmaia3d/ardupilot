@@ -120,6 +120,20 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @User: Standard
     AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, 30),
 
+    // @Param: _W_LQ
+    // @DisplayName: CRSF LQ warn level (in %)
+    // @Description: Set level at which CRSF_LQ item will flash (%)
+    // @Range: 0 100
+    // @User: Standard
+    AP_GROUPINFO("_W_LQ", 33, AP_OSD, warn_lq, 50),
+
+    // @Param: _W_SNR
+    // @DisplayName: CRSF SNR warn level (in %)
+    // @Description: Set level at which CRSF_SNR item will flash (in db)
+    // @Range: -20 10
+    // @User: Standard
+    AP_GROUPINFO("_W_SNR", 34, AP_OSD, warn_snr, 0),    
+
     // @Param: _W_NSAT
     // @DisplayName: NSAT warn level
     // @Description: Set level at which NSAT item will flash
