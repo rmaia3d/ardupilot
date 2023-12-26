@@ -2000,10 +2000,14 @@ void AP_OSD_Screen::draw_crsf_rssi_dbm(uint8_t x, uint8_t y)
 void AP_OSD_Screen::draw_crsf_snr(uint8_t x, uint8_t y)
 {
     const int8_t snr = AP::crsf()->get_link_status().snr;
-    if (snr == INT8_MIN) {
-        backend->write(x, y, false, "SNR---DB");
-    } else {
-        backend->write(x, y, false, "SNR%3dDB", snr);
+    const bool blink = snr < osd->warn_snr;
+    if (snr == INT8_MIN)
+    {
+        backend->write(x, y, blink, "SNR---DB");
+    }
+    else
+    {
+        backend->write(x, y, blink, "SNR%3dDB", snr);
     }
 }
 
@@ -2025,20 +2029,21 @@ void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
         btfl_fonts = true;
     }
 
-    const int16_t lqv = AP::crsf()->get_link_status().link_quality;            
+    const int16_t lqv = AP::crsf()->get_link_status().link_quality;
+    const bool blink = lqv < osd->warn_lq;            
     if (lqv < 0) {
         if(btfl_fonts) {
-            backend->write(x, y, false, "LQ--");
+            backend->write(x, y, blink, "LQ--");
         }
         else {
-            backend->write(x, y, false, "%c--", SYMBOL(SYM_LQ));
+            backend->write(x, y, blink, "%c--", SYMBOL(SYM_LQ));
         }
     } else {
         if(btfl_fonts) {
-            backend->write(x, y, false, "LQ%2d", lqv);
+            backend->write(x, y, blink, "LQ%2d", lqv);
         }
         else {
-            backend->write(x, y, false, "%c%2d", SYMBOL(SYM_LQ), lqv);
+            backend->write(x, y, blink, "%c%2d", SYMBOL(SYM_LQ), lqv);
         }        
     }
 }
