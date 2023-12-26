@@ -1438,10 +1438,10 @@ void AP_OSD_Screen::draw_bat_volt(uint8_t instance, VoltageType type, uint8_t x,
     }    
     if (!show_remaining_pct) {
         // Do not show battery percentage
-        backend->write(x,y, v < blinkvolt, "%2.1f%c", (double)v, SYMBOL(SYM_VOLT));
+        backend->write(x,y, v < blinkvolt, "%2.2f%c", (double)v, SYMBOL(SYM_VOLT));
         return;
     }
-    backend->write(x,y, v < blinkvolt, "%c%2.1f%c", SYMBOL(SYM_BATT_FULL) + p, (double)v, SYMBOL(SYM_VOLT));
+    backend->write(x,y, v < blinkvolt, "%c%2.2f%c", SYMBOL(SYM_BATT_FULL) + p, (double)v, SYMBOL(SYM_VOLT));
 }
 
 void AP_OSD_Screen::draw_bat_volt(uint8_t x, uint8_t y)
@@ -2116,7 +2116,7 @@ void AP_OSD_Screen::draw_hdop(uint8_t x, uint8_t y)
 {
     AP_GPS & gps = AP::gps();
     float hdp = gps.get_hdop() * 0.01f;
-    backend->write(x, y, false, "%c%c%3.2f", SYMBOL(SYM_HDOP_L), SYMBOL(SYM_HDOP_R), (double)hdp);
+    backend->write(x, y, false, "%c%c%2.1f", SYMBOL(SYM_HDOP_L), SYMBOL(SYM_HDOP_R), (double)hdp);
 }
 
 void AP_OSD_Screen::draw_waypoint(uint8_t x, uint8_t y)
