@@ -42,6 +42,7 @@
 #include <AP_Vehicle/AP_Vehicle.h>
 #include <AP_RPM/AP_RPM.h>
 #include <AP_RCProtocol/AP_RCProtocol_CRSF.h>
+#include <AP_MSP/AP_MSP.h>
 #if APM_BUILD_TYPE(APM_BUILD_Rover)
 #include <AP_WindVane/AP_WindVane.h>
 #endif
@@ -1943,15 +1944,32 @@ void AP_OSD_Screen::draw_esc_amps(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink)
 {
+    const AP_MSP *p_msp = AP::msp();
+    bool btfl_fonts = false;
+    if (p_msp && p_msp->is_option_enabled(AP_MSP::Option::DISPLAYPORT_BTFL_SYMBOLS)) {
+        btfl_fonts = true;
+    }
+
     if (value > 0) {
         if (value < 1000) {
-            backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));
+            if(btfl_fonts) {
+                backend->write(x, y, false, "%3dMW", value);    
+            }
+            else {
+                backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));    
+            }
+            
         } else {
             const float value_w = float(value) * 0.001f;
             backend->write(x, y, false, "%.2f%c", value_w, 'W');
         }
     } else {
-        backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));
+        if(btfl_fonts) {
+            backend->write(x, y, false, "---MW");
+        }
+        else {
+            backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));
+        }
     }
 }
 
@@ -1963,9 +1981,10 @@ void AP_OSD_Screen::draw_crsf_tx_power(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink)
 {
-    if (value >= 0) {
-        backend->write(x, y, blink, "%4d%c%c%c", -value, 'D', 'B', 'M');
-    } else {
+    if (value >= 0) {   
+        backend->write(x, y, blink, "%4dDBM", -value);   
+    }
+    else {
         backend->write(x, y, blink, "----DBM");
     }
 }
@@ -1984,7 +2003,7 @@ void AP_OSD_Screen::draw_crsf_snr(uint8_t x, uint8_t y)
     if (snr == INT8_MIN) {
         backend->write(x, y, false, "SNR---DB");
     } else {
-        backend->write(x, y, false, "SNR%3d%c%c", snr, 'D', 'B');
+        backend->write(x, y, false, "SNR%3dDB", snr);
     }
 }
 
@@ -2000,11 +2019,27 @@ void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
 {
+    const AP_MSP *p_msp = AP::msp();
+    bool btfl_fonts = false;
+    if (p_msp && p_msp->is_option_enabled(AP_MSP::Option::DISPLAYPORT_BTFL_SYMBOLS)) {
+        btfl_fonts = true;
+    }
+
     const int16_t lqv = AP::crsf()->get_link_status().link_quality;            
     if (lqv < 0) {
-        backend->write(x, y, false, "%c--", SYMBOL(SYM_LQ));
+        if(btfl_fonts) {
+            backend->write(x, y, false, "LQ--");
+        }
+        else {
+            backend->write(x, y, false, "%c--", SYMBOL(SYM_LQ));
+        }
     } else {
-        backend->write(x, y, false, "%c%2d", SYMBOL(SYM_LQ), lqv);
+        if(btfl_fonts) {
+            backend->write(x, y, false, "LQ%2d", lqv);
+        }
+        else {
+            backend->write(x, y, false, "%c%2d", SYMBOL(SYM_LQ), lqv);
+        }        
     }
 }
 
