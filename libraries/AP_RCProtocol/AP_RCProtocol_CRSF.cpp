@@ -508,7 +508,10 @@ bool AP_RCProtocol_CRSF::process_telemetry(bool check_constraint)
     return true;
 }
 
-constexpr uint16_t AP_RCProtocol_CRSF::tx_powers[];
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED
+    // Define the static tx powers array
+    constexpr uint16_t AP_RCProtocol_CRSF::tx_powers[];
+#endif
 
 // process link statistics to get RSSI
 void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
@@ -520,9 +523,7 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
         rssi_dbm = link->uplink_rssi_ant1;
     } else {
         rssi_dbm = link->uplink_rssi_ant2;
-    }
-
-    _link_status.rssi_dbm = rssi_dbm;
+    }        
     _link_status.link_quality = link->uplink_status;
 
     if (_use_lq_for_rssi) {
@@ -537,12 +538,19 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
             // this is an approximation recommended by Remo from TBS
             _link_status.rssi = int16_t(roundf((1.0f - (rssi_dbm - 50.0f) / 70.0f) * 255.0f));
         }
-    }
+    }    
 
-    _link_status.rf_mode = link->rf_mode;
-    _link_status.tx_power = link->uplink_tx_power < sizeof(AP_RCProtocol_CRSF::tx_powers) ? AP_RCProtocol_CRSF::tx_powers[link->uplink_tx_power] : -1;
+    _link_status.rf_mode = MIN(link->rf_mode, 7U);
+
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED
+    // Populate the extra data items
+    _link_status.rssi_dbm = rssi_dbm;
+    _link_status.tx_power = link->uplink_tx_power < sizeof(AP_RCProtocol_CRSF::tx_powers)
+                                ? AP_RCProtocol_CRSF::tx_powers[link->uplink_tx_power]
+                                : -1;
     _link_status.snr = link->uplink_snr;
-    _link_status.active_antenna = link->active_antenna;
+    _link_status.active_antenna = link->active_antenna;    
+#endif
 }
 
 // process link statistics to get RX RSSI
