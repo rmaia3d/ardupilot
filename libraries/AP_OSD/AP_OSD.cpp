@@ -37,7 +37,6 @@
 #include <AP_Terrain/AP_Terrain.h>
 #include <AP_RSSI/AP_RSSI.h>
 #include <GCS_MAVLink/GCS.h>
-#include <AP_RCProtocol/AP_RCProtocol_CRSF.h>
 
 // macro for easy use of var_info2
 #define AP_SUBGROUPINFO2(element, name, idx, thisclazz, elclazz) { name, AP_VAROFFSET(thisclazz, element), { group_info : elclazz::var_info2 }, AP_PARAM_FLAG_NESTED_OFFSET, idx, AP_PARAM_GROUP }
@@ -113,12 +112,13 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @RebootRequired: True
     AP_GROUPINFO("_H_OFFSET", 11, AP_OSD, h_offset, 32),
 
+#if OSD_CRSF_PANELS_ENABLED
     // @Param: _W_RSSI
     // @DisplayName: RSSI warn level (in %)
-    // @Description: Set level at which RSSI item will flash (% for the percentage element or -dBm for the dBm element)
-    // @Range: -128 100
+    // @Description: Set level at which RSSI item will flash (-dBm)
+    // @Range: -128 0
     // @User: Standard
-    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, 30),
+    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, -100),
 
     // @Param: _W_LQ
     // @DisplayName: CRSF LQ warn level (in %)
@@ -132,7 +132,15 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @Description: Set level at which CRSF_SNR item will flash (in db)
     // @Range: -20 10
     // @User: Standard
-    AP_GROUPINFO("_W_SNR", 34, AP_OSD, warn_snr, 0),    
+    AP_GROUPINFO("_W_SNR", 34, AP_OSD, warn_snr, 0),
+#else
+    // @Param: _W_RSSI
+    // @DisplayName: RSSI warn level (in %)
+    // @Description: Set level at which RSSI item will flash (%)
+    // @Range: 0 99
+    // @User: Standard
+    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, 30),
+#endif
 
     // @Param: _W_NSAT
     // @DisplayName: NSAT warn level

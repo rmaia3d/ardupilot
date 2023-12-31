@@ -32,6 +32,7 @@
 #include <GCS_MAVLink/GCS_MAVLink.h>
 #endif
 #include <AC_Fence/AC_Fence_config.h>
+#include <AP_RCProtocol/AP_RCProtocol_config.h>
 
 class AP_OSD_Backend;
 class AP_MSP;
@@ -48,6 +49,15 @@ class AP_MSP;
 #define PARAM_TOKEN_INDEX(token) PARAM_INDEX(AP_Param::get_persistent_key(token.key), token.idx, token.group_element)
 
 #define AP_OSD_NUM_SYMBOLS 91
+#define OSD_MAX_INSTANCES 2
+
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED && AP_RCPROTOCOL_CRSF_ENABLED
+// These options are defined in AP_RCProtocol_config.h
+#define OSD_CRSF_PANELS_ENABLED 1
+#else
+#define OSD_CRSF_PANELS_ENABLED 0
+#endif
+
 /*
   class to hold one setting
  */
@@ -221,12 +231,14 @@ private:
 #endif
     AP_OSD_Setting sidebars{false, 4, 5};
 
-    //CRSF style link stats
+#if OSD_CRSF_PANELS_ENABLED
+    // CRSF link stats data panels
     AP_OSD_Setting crsf_tx_power{false, 0, 0};
     AP_OSD_Setting crsf_rssi_dbm{false, 0, 0};
     AP_OSD_Setting crsf_snr{false, 0, 0};
     AP_OSD_Setting crsf_active_antenna{false, 0, 0};
     AP_OSD_Setting crsf_lq{false, 0, 0};
+#endif
 
     // MSP OSD only
     AP_OSD_Setting crosshair;
@@ -313,7 +325,9 @@ private:
 #endif
     void draw_rngf(uint8_t x, uint8_t y);
 
-    // CRSF style linkstats
+#if OSD_CRSF_PANELS_ENABLED
+    // CRSF link stats data panels
+
     void draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink = false);
     void draw_crsf_tx_power(uint8_t x, uint8_t y);
     void draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink = false);
@@ -321,6 +335,7 @@ private:
     void draw_crsf_snr(uint8_t x, uint8_t y);
     void draw_crsf_active_antenna(uint8_t x, uint8_t y);
     void draw_crsf_lq(uint8_t x, uint8_t y);
+#endif
 
     struct {
         bool load_attempted;
@@ -531,8 +546,6 @@ public:
     AP_Int8 h_offset;
 
     AP_Int8 warn_rssi;
-    AP_Int8 warn_lq;
-    AP_Int8 warn_snr;
     AP_Int8 warn_nsat;
     AP_Int32 warn_terr;
     AP_Float warn_avgcellvolt;
@@ -547,6 +560,11 @@ public:
     AP_Int8 disarm_scr;
     AP_Int8 failsafe_scr;
     AP_Int32 button_delay_ms;
+
+#if OSD_CRSF_PANELS_ENABLED
+    AP_Int8 warn_lq;
+    AP_Int8 warn_snr;
+#endif
 
     enum {
         OPTION_DECIMAL_PACK = 1U<<0,
