@@ -41,7 +41,6 @@
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_Vehicle/AP_Vehicle.h>
 #include <AP_RPM/AP_RPM.h>
-#include <AP_RCProtocol/AP_RCProtocol_CRSF.h>
 #include <AP_MSP/AP_MSP.h>
 #if APM_BUILD_TYPE(APM_BUILD_Rover)
 #include <AP_WindVane/AP_WindVane.h>
@@ -51,6 +50,10 @@
 #include <ctype.h>
 #include <GCS_MAVLink/GCS.h>
 #include <AC_Fence/AC_Fence.h>
+
+#if OSD_CRSF_PANELS_ENABLED
+#include <AP_RCProtocol/AP_RCProtocol_CRSF.h>   
+#endif
 
 const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
 
@@ -1059,6 +1062,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     AP_GROUPINFO("FONT", 4, AP_OSD_Screen, font_index, 0),
 #endif
 
+#if OSD_CRSF_PANELS_ENABLED
     // @Param: CRSFPWR_EN
     // @DisplayName: CRSFPWR_EN
     // @Description: Displays the TX power when using the CRSF RC protocol
@@ -1138,6 +1142,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Description: Vertical position on screen
     // @Range: 0 21
     AP_SUBGROUPINFO(crsf_lq, "CRSFLQ", 56, AP_OSD_Screen, AP_OSD_Setting),
+#endif
 
     AP_GROUPEND
 };
@@ -1942,6 +1947,7 @@ void AP_OSD_Screen::draw_esc_amps(uint8_t x, uint8_t y)
 }
 #endif
 
+#if OSD_CRSF_PANELS_ENABLED
 void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink)
 {
     const AP_MSP *p_msp = AP::msp();
@@ -2047,6 +2053,7 @@ void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
         }        
     }
 }
+#endif  // OSD_CRSF_PANELS_ENABLED
 
 void AP_OSD_Screen::draw_gps_latitude(uint8_t x, uint8_t y)
 {
@@ -2483,11 +2490,13 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(callsign);
     DRAW_SETTING(current2);
 
+#if OSD_CRSF_PANELS_ENABLED
     DRAW_SETTING(crsf_tx_power);
     DRAW_SETTING(crsf_rssi_dbm);
     DRAW_SETTING(crsf_snr);
     DRAW_SETTING(crsf_active_antenna);
     DRAW_SETTING(crsf_lq);
+#endif
 }
 #endif
 #endif // OSD_ENABLED
