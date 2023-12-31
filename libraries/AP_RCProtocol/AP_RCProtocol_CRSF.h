@@ -261,8 +261,11 @@ public:
         RF_MODE_UNKNOWN,
     };
 
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED    
+    // These power levels are valid for both Crossfire and ELRS systems
     static constexpr uint16_t tx_powers[] = { 0, 10, 25, 100, 500, 1000, 2000, 250, 50 };    
 
+    // Use a struct that contains the full link stats data
     struct LinkStatus {
         int16_t rssi = -1;
         int16_t link_quality = -1;
@@ -272,6 +275,14 @@ public:
         int8_t snr = INT8_MIN;
         int8_t active_antenna = -1;
     };
+#else
+    // Use the normal "default" struct to save flash and memory requirements
+    struct LinkStatus {
+        int16_t rssi = -1;
+        int16_t link_quality = -1;
+        uint8_t rf_mode;
+    };
+#endif
 
     // this will be used by AP_CRSF_Telem to access link status data
     // from within AP_RCProtocol_CRSF thread so no need for cross-thread synch
