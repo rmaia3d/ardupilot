@@ -1984,7 +1984,7 @@ void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value)
             backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));             
         } else {
             const float value_w = float(value) * 0.001f;
-            backend->write(x, y, false, "%.2f%c", value_w, 'W');
+            backend->write(x, y, false, "%.2f%c", value_w, SYMBOL(SYM_WATT));
         }
     } else {        
         backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));        
@@ -1998,7 +1998,7 @@ void AP_OSD_Screen::draw_tx_power_btfl(uint8_t x, uint8_t y, int16_t value)
             backend->write(x, y, false, "%3dMW", value);            
         } else {
             const float value_w = float(value) * 0.001f;
-            backend->write(x, y, false, "%.2f%c", value_w, 'W');
+            backend->write(x, y, false, "%.2fW", value_w);
         }
     } else {        
         backend->write(x, y, false, "---MW");        
@@ -2019,10 +2019,10 @@ void AP_OSD_Screen::draw_crsf_tx_power(uint8_t x, uint8_t y)
 void AP_OSD_Screen::draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink)
 {
     if (value >= 0) {   
-        backend->write(x, y, blink, "%4d%c", -value, 'D');   
+        backend->write(x, y, blink, "%4d%c", -value, SYMBOL(SYM_DBM));   
     }
     else {
-        backend->write(x, y, blink, "----%c", 'D');
+        backend->write(x, y, blink, "----%c", SYMBOL(SYM_DBM));
     }
 }
 
@@ -2058,10 +2058,10 @@ void AP_OSD_Screen::draw_crsf_snr(uint8_t x, uint8_t y)
     }
     else {
         if (snr == INT8_MIN) {
-            backend->write(x, y, blink, "%c---%c", 'N', 'D');
+            backend->write(x, y, blink, "%c---%c", SYMBOL(SYM_SNR), SYMBOL(SYM_DB));
         }
         else {
-            backend->write(x, y, blink, "%c%3d%c", 'N', snr, 'D');
+            backend->write(x, y, blink, "%c%3d%c", SYMBOL(SYM_SNR), snr, SYMBOL(SYM_DB));
         }
     }    
 }
@@ -2084,10 +2084,10 @@ void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
     }
     else {
         if (active_antenna < 0) {
-            backend->write(x, y, false, "%c-", 'A');
+            backend->write(x, y, false, "%c-", SYMBOL(SYM_ANT));
         } 
         else {
-            backend->write(x, y, false, "%c%d", 'A', active_antenna + 1);
+            backend->write(x, y, false, "%c%d", SYMBOL(SYM_ANT), active_antenna + 1);
         }
     }    
 }
