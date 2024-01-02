@@ -244,6 +244,9 @@ public:
         PROTOCOL_ELRS
     };
 
+    // Limit the number of ELRS RF modes based on: https://www.expresslrs.org/info/signal-health/#rf-mode-indexes-rfmd
+    # define ELRS_MAX_RFMD_MODES 14
+
     enum RFMode {
         CRSF_RF_MODE_4HZ = 0,
         CRSF_RF_MODE_50HZ,
@@ -253,10 +256,17 @@ public:
         ELRS_RF_MODE_25HZ,
         ELRS_RF_MODE_50HZ,
         ELRS_RF_MODE_100HZ,
+        ELRS_RF_MODE_100HZ_FULL,
         ELRS_RF_MODE_150HZ,
         ELRS_RF_MODE_200HZ,
         ELRS_RF_MODE_250HZ,
+        ELRS_RF_MODE_333HZ_FULL,        
         ELRS_RF_MODE_500HZ,
+        ELRS_RF_MODE_D250HZ,
+        ELRS_RF_MODE_D500HZ,
+        ELRS_RF_MODE_F500HZ,
+        ELRS_RF_MODE_F1000HZ,
+        ELRS_RF_MODE_D50HZ,
         RF_MODE_MAX_MODES,
         RF_MODE_UNKNOWN,
     };
