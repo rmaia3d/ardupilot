@@ -1129,7 +1129,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
 
     // @Param: CRSFLQ_EN
     // @DisplayName: CRSFLQ_EN
-    // @Description: Displays the CRSF linq quality (uplink, 0 to 100%)
+    // @Description: Displays the CRSF link quality (uplink, 0 to 100%) and also RF mode if bit 20 of OSD_OPTIONS is set
     // @Values: 0:Disabled,1:Enabled
 
     // @Param: CRSFLQ_X
@@ -2036,21 +2036,43 @@ void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
     }
 
     const int16_t lqv = AP::crsf()->get_link_status().link_quality;
-    const bool blink = lqv < osd->warn_lq;            
-    if (lqv < 0) {
-        if(btfl_fonts) {
-            backend->write(x, y, blink, "LQ--");
+    const bool blink = lqv < osd->warn_lq;
+    if(check_option(AP_OSD::OPTION_RF_MODE_ALONG_WITH_LQ)) {
+        const int16_t rf_mode = AP::crsf()->get_link_status().rf_mode;        
+        if (lqv < 0)
+        {
+            if(btfl_fonts) {
+                backend->write(x, y, blink, "LQ--:--");
+            }
+            else {
+                backend->write(x, y, blink, "%c--:--", SYMBOL(SYM_LQ));
+            }
         }
-        else {
-            backend->write(x, y, blink, "%c--", SYMBOL(SYM_LQ));
+        else
+        {
+            if(btfl_fonts) {
+                backend->write(x, y, blink, "LQ%2d:%2d", rf_mode, lqv);
+            }
+            else {
+                backend->write(x, y, blink, "%c%2d:%2d", SYMBOL(SYM_LQ), rf_mode, lqv);
+            }
         }
-    } else {
-        if(btfl_fonts) {
-            backend->write(x, y, blink, "LQ%2d", lqv);
+    } else {           
+        if (lqv < 0) {
+            if(btfl_fonts) {
+                backend->write(x, y, blink, "LQ--");
+            }
+            else {
+                backend->write(x, y, blink, "%c--", SYMBOL(SYM_LQ));
+            }
+        } else {
+            if(btfl_fonts) {
+                backend->write(x, y, blink, "LQ%2d", lqv);
+            }
+            else {
+                backend->write(x, y, blink, "%c%2d", SYMBOL(SYM_LQ), lqv);
+            }        
         }
-        else {
-            backend->write(x, y, blink, "%c%2d", SYMBOL(SYM_LQ), lqv);
-        }        
     }
 }
 #endif  // OSD_CRSF_PANELS_ENABLED
