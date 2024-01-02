@@ -1959,39 +1959,56 @@ bool AP_OSD_Screen::is_btfl_fonts()
     }    
 }
 
-void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink)
-{
-    bool btfl_fonts = this->is_btfl_fonts();  
+void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value)
+{    
     if (value > 0) {
-        if (value < 1000) {
-            if(btfl_fonts) {
-                backend->write(x, y, false, "%3dMW", value);    
-            }
-            else {
-                backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));    
-            }
-            
+        if (value < 1000) {            
+            backend->write(x, y, false, "%3d%c", value, SYMBOL(SYM_MW));             
         } else {
             const float value_w = float(value) * 0.001f;
             backend->write(x, y, false, "%.2f%c", value_w, 'W');
         }
-    } else {
-        if(btfl_fonts) {
-            backend->write(x, y, false, "---MW");
+    } else {        
+        backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));        
+    }
+}
+
+void AP_OSD_Screen::draw_tx_power_btfl(uint8_t x, uint8_t y, int16_t value)
+{    
+    if (value > 0) {
+        if (value < 1000) { 
+            backend->write(x, y, false, "%3dMW", value);            
+        } else {
+            const float value_w = float(value) * 0.001f;
+            backend->write(x, y, false, "%.2f%c", value_w, 'W');
         }
-        else {
-            backend->write(x, y, false, "---%c", SYMBOL(SYM_MW));
-        }
+    } else {        
+        backend->write(x, y, false, "---MW");        
     }
 }
 
 void AP_OSD_Screen::draw_crsf_tx_power(uint8_t x, uint8_t y)
 {
     const int16_t tx_power = AP::crsf()->get_link_status().tx_power;
-    draw_tx_power(x, y, tx_power);
+    if(this->is_btfl_fonts()) {
+        this->draw_tx_power_btfl(x, y, tx_power);
+    }
+    else {
+        this->draw_tx_power(x, y, tx_power);
+    }    
 }
 
 void AP_OSD_Screen::draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink)
+{
+    if (value >= 0) {   
+        backend->write(x, y, blink, "%4d%c", -value, 'D');   
+    }
+    else {
+        backend->write(x, y, blink, "----%c", 'D');
+    }
+}
+
+void AP_OSD_Screen::draw_rssi_dbm_btfl(uint8_t x, uint8_t y, int8_t value, bool blink)
 {
     if (value >= 0) {   
         backend->write(x, y, blink, "%4dDBM", -value);   
@@ -2006,74 +2023,112 @@ void AP_OSD_Screen::draw_crsf_rssi_dbm(uint8_t x, uint8_t y)
     const int8_t rssidbm = AP::crsf()->get_link_status().rssi_dbm;
     const bool blink = -rssidbm < osd->warn_rssi;
     backend->write(x, y, blink, "%c", SYMBOL(SYM_RSSI));
-    draw_rssi_dbm(x+1, y, rssidbm, blink);
+    if(this->is_btfl_fonts()) {
+        this->draw_rssi_dbm_btfl(x+1, y, rssidbm, blink);
+    } 
+    else {
+        this->draw_rssi_dbm(x+1, y, rssidbm, blink);
+    }
 }
 
 void AP_OSD_Screen::draw_crsf_snr(uint8_t x, uint8_t y)
 {
     const int8_t snr = AP::crsf()->get_link_status().snr;
     const bool blink = snr < osd->warn_snr;
-    if (snr == INT8_MIN)
-    {
+    if(this->is_btfl_fonts()) {
+        this->draw_crsf_snr_btfl(x, y, snr, blink);
+    }
+    else {
+        if (snr == INT8_MIN) {
+            backend->write(x, y, blink, "%c---%c", 'N', 'D');
+        }
+        else {
+            backend->write(x, y, blink, "%c%3d%c", 'N', snr, 'D');
+        }
+    }    
+}
+
+void AP_OSD_Screen::draw_crsf_snr_btfl(uint8_t x, uint8_t y, int8_t value, bool blink)
+{    
+    if (value == INT8_MIN) {
         backend->write(x, y, blink, "SNR---DB");
     }
-    else
-    {
-        backend->write(x, y, blink, "SNR%3dDB", snr);
+    else {
+        backend->write(x, y, blink, "SNR%3dDB", value);
     }
 }
 
 void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
 {
     const int8_t active_antenna = AP::crsf()->get_link_status().active_antenna;
-    if (active_antenna < 0) {
+    if(this->is_btfl_fonts()) {
+        this->draw_crsf_active_antenna_btfl(x, y, active_antenna);
+    }
+    else {
+        if (active_antenna < 0) {
+            backend->write(x, y, false, "%c-", 'A');
+        } 
+        else {
+            backend->write(x, y, false, "%c%d", 'A', active_antenna + 1);
+        }
+    }    
+}
+
+void AP_OSD_Screen::draw_crsf_active_antenna_btfl(uint8_t x, uint8_t y, int8_t value)
+{    
+    if (value < 0) {
         backend->write(x, y, false, "ANT-");
     } else {
-        backend->write(x, y, false, "ANT%d", active_antenna + 1);
+        backend->write(x, y, false, "ANT%d", value + 1);
     }
 }
 
 void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
-{
-    bool btfl_fonts = this->is_btfl_fonts();  
+{    
     const int16_t lqv = AP::crsf()->get_link_status().link_quality;
     const bool blink = lqv < osd->warn_lq;
-    if(check_option(AP_OSD::OPTION_RF_MODE_ALONG_WITH_LQ)) {
-        const int16_t rf_mode = AP::crsf()->get_link_status().rf_mode;        
-        if (lqv < 0)
-        {
-            if(btfl_fonts) {
-                backend->write(x, y, blink, "LQ--:--");
-            }
-            else {
+    if(this->is_btfl_fonts()) {
+        this->draw_crsf_lq_btfl(x, y, lqv, blink);
+    }
+    else {
+        if(check_option(AP_OSD::OPTION_RF_MODE_ALONG_WITH_LQ)) {
+            const int16_t rf_mode = AP::crsf()->get_link_status().rf_mode;        
+            if (lqv < 0) {            
                 backend->write(x, y, blink, "%c--:--", SYMBOL(SYM_LQ));
-            }
-        }
-        else
-        {
-            if(btfl_fonts) {
-                backend->write(x, y, blink, "LQ%2d:%2d", rf_mode, lqv);
-            }
-            else {
+            }        
+            else {            
                 backend->write(x, y, blink, "%c%2d:%2d", SYMBOL(SYM_LQ), rf_mode, lqv);
             }
-        }
-    } else {           
-        if (lqv < 0) {
-            if(btfl_fonts) {
-                backend->write(x, y, blink, "LQ--");
-            }
-            else {
+        }        
+        else {           
+            if (lqv < 0) {            
                 backend->write(x, y, blink, "%c--", SYMBOL(SYM_LQ));
             }
-        } else {
-            if(btfl_fonts) {
-                backend->write(x, y, blink, "LQ%2d", lqv);
-            }
-            else {
+            else {            
                 backend->write(x, y, blink, "%c%2d", SYMBOL(SYM_LQ), lqv);
             }        
         }
+    }
+}
+
+void AP_OSD_Screen::draw_crsf_lq_btfl(uint8_t x, uint8_t y, int16_t value, bool blink)
+{
+    if(check_option(AP_OSD::OPTION_RF_MODE_ALONG_WITH_LQ)) {
+        const int16_t rf_mode = AP::crsf()->get_link_status().rf_mode;        
+        if (value < 0) {            
+            backend->write(x, y, blink, "LQ--:--");
+        }        
+        else {            
+            backend->write(x, y, blink, "LQ%2d:%2d", rf_mode, value);
+        }        
+    } 
+    else {           
+        if (value < 0) {            
+            backend->write(x, y, blink, "LQ--");
+        }             
+        else {
+            backend->write(x, y, blink, "LQ%2d", value);
+        }        
     }
 }
 #endif  // OSD_CRSF_PANELS_ENABLED
