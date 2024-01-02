@@ -1253,6 +1253,24 @@ uint8_t AP_OSD_AbstractScreen::symbols_lookup_table[AP_OSD_NUM_SYMBOLS];
 #define SYM_SIDEBAR_I 89
 #define SYM_SIDEBAR_J 90
 
+#define SYM_WATT 91
+#define SYM_WH 92
+#define SYM_DB 93
+#define SYM_DBM 94
+#define SYM_SNR 95
+#define SYM_ANT 96
+#define SYM_ARROW_RIGHT 97
+#define SYM_ARROW_LEFT 98
+
+#define SYM_G 99
+#define SYM_BATT_UNKNOWN 100
+#define SYM_ROLL 101
+#define SYM_PITCH 102
+#define SYM_DPS 103
+#define SYM_HEADING 104
+#define SYM_RADIUS 105
+#define SYM_FLAP 106
+
 #define SYMBOL(n) AP_OSD_AbstractScreen::symbols_lookup_table[n]
 
 // constructor
