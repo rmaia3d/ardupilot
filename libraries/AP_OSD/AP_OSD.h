@@ -329,13 +329,18 @@ private:
     // CRSF link stats data panels
 
     bool is_btfl_fonts();
-    void draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink = false);
+    void draw_tx_power(uint8_t x, uint8_t y, int16_t value);
+    void draw_tx_power_btfl(uint8_t x, uint8_t y, int16_t value);
     void draw_crsf_tx_power(uint8_t x, uint8_t y);
     void draw_rssi_dbm(uint8_t x, uint8_t y, int8_t value, bool blink = false);
+    void draw_rssi_dbm_btfl(uint8_t x, uint8_t y, int8_t value, bool blink = false);
     void draw_crsf_rssi_dbm(uint8_t x, uint8_t y);
     void draw_crsf_snr(uint8_t x, uint8_t y);
+    void draw_crsf_snr_btfl(uint8_t x, uint8_t y, int8_t value, bool blink = false);
     void draw_crsf_active_antenna(uint8_t x, uint8_t y);
+    void draw_crsf_active_antenna_btfl(uint8_t x, uint8_t y, int8_t value);
     void draw_crsf_lq(uint8_t x, uint8_t y);
+    void draw_crsf_lq_btfl(uint8_t x, uint8_t y, int16_t value, bool blink = false);
 #endif
 
     struct {
