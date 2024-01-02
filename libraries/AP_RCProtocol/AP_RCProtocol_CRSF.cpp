@@ -157,7 +157,7 @@ static const char* get_frame_type(uint8_t byte, uint8_t subtype = 0)
 
 const uint16_t AP_RCProtocol_CRSF::RF_MODE_RATES[RFMode::RF_MODE_MAX_MODES] = {
     4, 50, 150, 250,    // CRSF
-    4, 25, 50, 100, 150, 200, 250, 500  // ELRS
+    4, 25, 50, 100, 100, 150, 200, 250, 333, 500, 250, 500, 500, 1000, 50  // ELRS
 };
 
 AP_RCProtocol_CRSF* AP_RCProtocol_CRSF::_singleton;
@@ -540,7 +540,7 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
         }
     }    
 
-    _link_status.rf_mode = MIN(link->rf_mode, 7U);
+    _link_status.rf_mode = MIN(link->rf_mode, ELRS_MAX_RFMD_MODES); // Cap to avoid memory spills in the conversion tables
 
 #if AP_OSD_CRSF_EXTENSIONS_ENABLED
     // Populate the extra data items
