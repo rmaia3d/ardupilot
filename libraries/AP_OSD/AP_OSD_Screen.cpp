@@ -1948,14 +1948,20 @@ void AP_OSD_Screen::draw_esc_amps(uint8_t x, uint8_t y)
 #endif
 
 #if OSD_CRSF_PANELS_ENABLED
+bool AP_OSD_Screen::is_btfl_fonts()
+{
+    const AP_MSP *p_msp = AP::msp();    
+    if (p_msp && p_msp->is_option_enabled(AP_MSP::Option::DISPLAYPORT_BTFL_SYMBOLS)) {
+        return true;
+    }
+    else {
+        return false;
+    }    
+}
+
 void AP_OSD_Screen::draw_tx_power(uint8_t x, uint8_t y, int16_t value, bool blink)
 {
-    const AP_MSP *p_msp = AP::msp();
-    bool btfl_fonts = false;
-    if (p_msp && p_msp->is_option_enabled(AP_MSP::Option::DISPLAYPORT_BTFL_SYMBOLS)) {
-        btfl_fonts = true;
-    }
-
+    bool btfl_fonts = this->is_btfl_fonts();  
     if (value > 0) {
         if (value < 1000) {
             if(btfl_fonts) {
@@ -2029,12 +2035,7 @@ void AP_OSD_Screen::draw_crsf_active_antenna(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_crsf_lq(uint8_t x, uint8_t y)
 {
-    const AP_MSP *p_msp = AP::msp();
-    bool btfl_fonts = false;
-    if (p_msp && p_msp->is_option_enabled(AP_MSP::Option::DISPLAYPORT_BTFL_SYMBOLS)) {
-        btfl_fonts = true;
-    }
-
+    bool btfl_fonts = this->is_btfl_fonts();  
     const int16_t lqv = AP::crsf()->get_link_status().link_quality;
     const bool blink = lqv < osd->warn_lq;
     if(check_option(AP_OSD::OPTION_RF_MODE_ALONG_WITH_LQ)) {
