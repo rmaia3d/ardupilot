@@ -14,6 +14,12 @@ int8_t RC_Channels_Copter::flight_mode_channel_number() const
     return copter.g.flight_mode_chan.get();
 }
 
+bool RC_Channels_Copter::is_extended_flight_modes_enabled() const
+{
+    // This is only used in Plane for now, so return false always
+    return false;
+}
+
 void RC_Channel_Copter::mode_switch_changed(modeswitch_pos_t new_pos)
 {
     if (new_pos < 0 || (uint8_t)new_pos > copter.num_flight_modes) {
