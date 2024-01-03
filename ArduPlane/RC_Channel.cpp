@@ -16,6 +16,11 @@ int8_t RC_Channels_Plane::flight_mode_channel_number() const
     return plane.g.flight_mode_channel.get();
 }
 
+bool RC_Channels_Plane::is_extended_flight_modes_enabled() const
+{
+    return (plane.g.flight_modes_extended.get() == 1);
+}
+
 bool RC_Channels_Plane::has_valid_input() const
 {
     if (plane.rc_failsafe_active() || plane.failsafe.rc_failsafe) {
