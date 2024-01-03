@@ -405,6 +405,7 @@ private:
 
     bool read_3pos_switch(AuxSwitchPos &ret) const WARN_IF_UNUSED;
     bool read_6pos_switch(int8_t& position) WARN_IF_UNUSED;
+    bool read_extended_mode_switch(int8_t &position) WARN_IF_UNUSED;
 
     // Structure used to detect and debounce switch changes
     struct {
@@ -415,7 +416,7 @@ private:
     } switch_state;
 
     void reset_mode_switch();
-    void read_mode_switch();
+    void read_mode_switch(bool extended = false);
     bool debounce_completed(int8_t position);
     // returns true if the first time we successfully read the
     // channel's three-position-switch position we should record that
@@ -504,7 +505,7 @@ public:
 
     // mode switch handling
     void reset_mode_switch();
-    virtual void read_mode_switch();
+    virtual void read_mode_switch();    
 
     virtual bool in_rc_failsafe() const { return true; };
     virtual bool has_valid_input() const { return false; };
@@ -591,6 +592,9 @@ public:
 
     // flight_mode_channel_number must be overridden in vehicle specific code
     virtual int8_t flight_mode_channel_number() const = 0;
+
+    // is_extended_flight_modes_enabled must be overridden in vehicle specific code
+    virtual bool is_extended_flight_modes_enabled() const = 0;
 
     // set and get calibrating flag, stops arming if true
     void calibrating(bool b) { gcs_is_calibrating = b; }
