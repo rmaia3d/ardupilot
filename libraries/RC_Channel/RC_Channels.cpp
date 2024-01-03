@@ -220,8 +220,8 @@ void RC_Channels::read_mode_switch()
     RC_Channel *c = flight_mode_channel();
     if (c == nullptr) {
         return;
-    }
-    c->read_mode_switch();
+    }    
+    c->read_mode_switch(is_extended_flight_modes_enabled());    
 }
 
 // check if flight mode channel is assigned RC option

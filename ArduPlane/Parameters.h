@@ -357,6 +357,15 @@ public:
         k_param_acro_yaw_rate,
         k_param_takeoff_throttle_max_t,
         k_param_autotune_options,
+
+        // Extended flight modes
+        k_param_flight_mode7,
+        k_param_flight_mode8,
+        k_param_flight_mode9,
+        k_param_flight_mode10,
+        k_param_flight_mode11,
+        k_param_flight_mode12,
+        k_param_flight_modes_extended,
     };
 
     AP_Int16 format_version;
@@ -419,7 +428,14 @@ public:
     AP_Int8 flight_mode4;
     AP_Int8 flight_mode5;
     AP_Int8 flight_mode6;
+    AP_Int8 flight_mode7;
+    AP_Int8 flight_mode8;
+    AP_Int8 flight_mode9;
+    AP_Int8 flight_mode10;
+    AP_Int8 flight_mode11;
+    AP_Int8 flight_mode12;
     AP_Int8 initial_mode;
+    AP_Int8 flight_modes_extended;
 
     // Navigational manoeuvring limits
     //
