@@ -50,4 +50,6 @@ protected:
 
     int8_t flight_mode_channel_number() const override;
 
+    // This must be defined/overridden in every calss that inherits from RC_Channels
+    bool is_extended_flight_modes_enabled() const override;
 };
