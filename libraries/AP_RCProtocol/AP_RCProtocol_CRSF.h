@@ -244,15 +244,13 @@ public:
         PROTOCOL_ELRS
     };
 
-    // Limit the number of ELRS RF modes based on: https://www.expresslrs.org/info/signal-health/#rf-mode-indexes-rfmd
-    # define ELRS_MAX_RFMD_MODES 14
-
+    // Source for ELRS RF modes: https://www.expresslrs.org/info/signal-health/#rf-mode-indexes-rfmd
     enum RFMode {
         CRSF_RF_MODE_4HZ = 0,
         CRSF_RF_MODE_50HZ,
         CRSF_RF_MODE_150HZ,
         CRSF_RF_MODE_250HZ,
-        ELRS_RF_MODE_4HZ,
+        CRSF_RF_MAX_MODES,
         ELRS_RF_MODE_25HZ,
         ELRS_RF_MODE_50HZ,
         ELRS_RF_MODE_100HZ,
@@ -271,28 +269,24 @@ public:
         RF_MODE_UNKNOWN,
     };
 
-#if AP_OSD_CRSF_EXTENSIONS_ENABLED    
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED
     // These power levels are valid for both Crossfire and ELRS systems
     static constexpr uint16_t tx_powers[] = { 0, 10, 25, 100, 500, 1000, 2000, 250, 50 };    
+#endif
 
-    // Use a struct that contains the full link stats data
-    struct LinkStatus {
-        int16_t rssi = -1;
-        int16_t link_quality = -1;
-        int8_t rf_mode = -1;
-        int16_t tx_power = -1;
-        int8_t rssi_dbm = -1;
-        int8_t snr = INT8_MIN;
-        int8_t active_antenna = -1;
-    };
-#else
-    // Use the normal "default" struct to save flash and memory requirements
     struct LinkStatus {
         int16_t rssi = -1;
         int16_t link_quality = -1;
         uint8_t rf_mode;
-    };
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED
+        // Add the extra data fields to be used by the OSD panels
+        int16_t tx_power = -1;
+        int8_t rssi_dbm = -1;
+        int8_t snr = INT8_MIN;
+        int8_t active_antenna = -1;
 #endif
+    };
+
 
     // this will be used by AP_CRSF_Telem to access link status data
     // from within AP_RCProtocol_CRSF thread so no need for cross-thread synch
