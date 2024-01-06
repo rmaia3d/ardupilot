@@ -201,7 +201,7 @@ const char* AP_RCProtocol_CRSF::get_protocol_string(ProtocolType protocol) const
 // return the link rate as defined by the LinkStatistics
 uint16_t AP_RCProtocol_CRSF::get_link_rate(ProtocolType protocol) const {
     if (protocol == ProtocolType::PROTOCOL_ELRS) {
-        return RF_MODE_RATES[_link_status.rf_mode + RFMode::ELRS_RF_MODE_4HZ];
+        return RF_MODE_RATES[_link_status.rf_mode + RFMode::CRSF_RF_MAX_MODES];
     } else if (protocol == ProtocolType::PROTOCOL_TRACER) {
         return 250;
     } else {
@@ -523,7 +523,7 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
         rssi_dbm = link->uplink_rssi_ant1;
     } else {
         rssi_dbm = link->uplink_rssi_ant2;
-    }        
+    }
     _link_status.link_quality = link->uplink_status;
 
     if (_use_lq_for_rssi) {
@@ -538,9 +538,11 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
             // this is an approximation recommended by Remo from TBS
             _link_status.rssi = int16_t(roundf((1.0f - (rssi_dbm - 50.0f) / 70.0f) * 255.0f));
         }
-    }    
+    }
 
-    _link_status.rf_mode = MIN(link->rf_mode, ELRS_MAX_RFMD_MODES); // Cap to avoid memory spills in the conversion tables
+    // Define the max number of RFModes based on ELRS modes, which is larger than Crossfire
+    const uint8_t max_modes = (RFMode::RF_MODE_MAX_MODES - RFMode::CRSF_RF_MAX_MODES) - 1U; // Subtract 1 due to zero-indexing
+    _link_status.rf_mode = MIN(link->rf_mode, max_modes); // Cap to avoid memory spills in the conversion tables
 
 #if AP_OSD_CRSF_EXTENSIONS_ENABLED
     // Populate the extra data items
