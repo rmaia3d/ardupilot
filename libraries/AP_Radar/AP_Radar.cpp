@@ -64,7 +64,7 @@ void AP_Radar::update(void)
     }
 
     // only healthy if the data is less than 3s old
-    _flags.healthy = (AP_HAL::millis() - _last_update_ms < RADAR_PEER_FRESH_TIME_MS);
+    _flags.healthy = ((AP_HAL::millis() - _last_update_ms) < RADAR_PEER_FRESH_TIME_MS);
 }
 
 void AP_Radar::handle_msg(const mavlink_message_t &msg)
@@ -107,16 +107,18 @@ radar_peer_t AP_Radar::get_peer(uint8_t id)
 bool AP_Radar::get_peer_healthy(uint8_t id)
 {
     return _state.peers[id].last_update > (AP_HAL::millis() - 3000) &&
-        !_state.peers[id].location.is_zero();
+        !_state.peers[id].location.is_zero() && _state.peers[id].lq > 0;
 }
 
 uint8_t AP_Radar::get_next_healthy_peer(uint8_t current_id)
 {
         // Try all available slots
 	for (uint8_t i = 1; i < RADAR_MAX_PEERS; i++) {
-            uint8_t next_peer = (current_id + i) % RADAR_MAX_PEERS;
-            if (get_peer_healthy(next_peer)) {
-                return next_peer;
+        uint8_t next_id = current_id + i;
+        uint8_t next_peer = next_id >= RADAR_MAX_PEERS ? next_id - RADAR_MAX_PEERS : next_id;
+        if (get_peer_healthy(next_peer))
+        {
+            return next_peer;
             }
         }
         return current_id;
