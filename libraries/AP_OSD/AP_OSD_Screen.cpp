@@ -1672,12 +1672,11 @@ void AP_OSD_Screen::draw_radar(uint8_t x, uint8_t y)
             vertical_distance = 0.0f;
         }
         int32_t angle = wrap_360_cd(loc.get_bearing_to(peer_loc) - ahrs.yaw_sensor);
-        int32_t interval = 36000 / SYMBOL(SYM_ARROW_COUNT);
         if (distance < 2.0f) {
             //avoid fast rotating arrow at small distances
             angle = 0;
         }
-        char arrow = SYMBOL(SYM_ARROW_START) + ((angle + interval / 2) / interval) % SYMBOL(SYM_ARROW_COUNT);
+        char arrow = get_arrow_font_index(angle);
         backend->write(x, y, false, "%c%c", id + 65, arrow);
         draw_distance(x+2, y, distance);
         draw_vdistance(x+1, y+1, vertical_distance);
