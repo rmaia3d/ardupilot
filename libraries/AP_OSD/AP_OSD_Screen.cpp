@@ -1079,21 +1079,21 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @Range: 0 21
     AP_SUBGROUPINFO(crsf_tx_power, "CRSF_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSF_RSSI_EN
-    // @DisplayName: CRSF_RSSI_EN
+    // @Param: CRSFRSSI_EN
+    // @DisplayName: CRSFRSSI_EN
     // @Description: Displays RC signal strength in dBm for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSF_RSSI_X
-    // @DisplayName: CRSF_RSSI_X
+    // @Param: CRSFRSSI_X
+    // @DisplayName: CRSFRSSI_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSF_RSSI_Y
-    // @DisplayName: CRSF_RSSI_Y
+    // @Param: CRSFRSSI_Y
+    // @DisplayName: CRSFRSSI_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSF_RSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSFRSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: CRSF_SNR_EN
     // @DisplayName: CRSF_SNR_EN
