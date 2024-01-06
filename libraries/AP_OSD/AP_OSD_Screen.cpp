@@ -51,7 +51,7 @@
 #include <GCS_MAVLink/GCS.h>
 #include <AC_Fence/AC_Fence.h>
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
 #include <AP_RCProtocol/AP_RCProtocol_CRSF.h>   
 #endif
 
@@ -1062,86 +1062,86 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     AP_GROUPINFO("FONT", 4, AP_OSD_Screen, font_index, 0),
 #endif
 
-#if OSD_CRSF_PANELS_ENABLED
-    // @Param: CRSFPWR_EN
-    // @DisplayName: CRSFPWR_EN
+#if AP_OSD_CRSF_PANELS_ENABLED
+    // @Param: CRSF_PWR_EN
+    // @DisplayName: CRSF_PWR_EN
     // @Description: Displays the TX power when using the CRSF RC protocol
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFPWR_X
-    // @DisplayName: CRSFPWR_X
+    // @Param: CRSF_PWR_X
+    // @DisplayName: CRSF_PWR_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFPWR_Y
-    // @DisplayName: CRSFPWR_Y
+    // @Param: CRSF_PWR_Y
+    // @DisplayName: CRSF_PWR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_tx_power, "CRSFPWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_tx_power, "CRSF_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSFRSSI_EN
-    // @DisplayName: CRSFRSSI_EN
+    // @Param: CRSF_RSSI_EN
+    // @DisplayName: CRSF_RSSI_EN
     // @Description: Displays RC signal strength in dBm for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFRSSI_X
-    // @DisplayName: CRSFRSSI_X
+    // @Param: CRSF_RSSI_X
+    // @DisplayName: CRSF_RSSI_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFRSSI_Y
-    // @DisplayName: CRSFRSSI_Y
+    // @Param: CRSF_RSSI_Y
+    // @DisplayName: CRSF_RSSI_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSFRSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSF_RSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSFSNR_EN
-    // @DisplayName: CRSFSNR_EN
+    // @Param: CRSF_SNR_EN
+    // @DisplayName: CRSF_SNR_EN
     // @Description: Displays RC signal to noise ratio in dB for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFSNR_X
-    // @DisplayName: CRSFSNR_X
+    // @Param: CRSF_SNR_X
+    // @DisplayName: CRSF_SNR_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFSNR_Y
-    // @DisplayName: CRSFSNR_Y
+    // @Param: CRSF_SNR_Y
+    // @DisplayName: CRSF_SNR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_snr, "CRSFSNR", 53, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_snr, "CRSF_SNR", 53, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSFANT_EN
-    // @DisplayName: CRSFANT_EN
+    // @Param: CRSF_ANT_EN
+    // @DisplayName: CRSF_ANT_EN
     // @Description: Displays the current active antenna for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFANT_X
-    // @DisplayName: CRSFANT_X
+    // @Param: CRSF_ANT_X
+    // @DisplayName: CRSF_ANT_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFANT_Y
-    // @DisplayName: CRSFANT_Y
+    // @Param: CRSF_ANT_Y
+    // @DisplayName: CRSF_ANT_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_active_antenna, "CRSFANT", 52, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_active_antenna, "CRSF_ANT", 52, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSFLQ_EN
-    // @DisplayName: CRSFLQ_EN
+    // @Param: CRSF_LQ_EN
+    // @DisplayName: CRSF_LQ_EN
     // @Description: Displays the CRSF link quality (uplink, 0 to 100%) and also RF mode if bit 20 of OSD_OPTIONS is set
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFLQ_X
-    // @DisplayName: CRSFLQ_X
+    // @Param: CRSF_LQ_X
+    // @DisplayName: CRSF_LQ_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFLQ_Y
-    // @DisplayName: CRSFLQ_Y
+    // @Param: CRSF_LQ_Y
+    // @DisplayName: CRSF_LQ_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_lq, "CRSFLQ", 56, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_lq, "CRSF_LQ", 56, AP_OSD_Screen, AP_OSD_Setting),
 #endif
 
     AP_GROUPEND
@@ -1965,7 +1965,7 @@ void AP_OSD_Screen::draw_esc_amps(uint8_t x, uint8_t y)
 }
 #endif
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
 bool AP_OSD_Screen::is_btfl_fonts()
 {
     const AP_MSP *p_msp = AP::msp();    
@@ -2149,7 +2149,7 @@ void AP_OSD_Screen::draw_crsf_lq_btfl(uint8_t x, uint8_t y, int16_t value, bool 
         }        
     }
 }
-#endif  // OSD_CRSF_PANELS_ENABLED
+#endif  // AP_OSD_CRSF_PANELS_ENABLED
 
 void AP_OSD_Screen::draw_gps_latitude(uint8_t x, uint8_t y)
 {
@@ -2586,7 +2586,7 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(callsign);
     DRAW_SETTING(current2);
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
     DRAW_SETTING(crsf_tx_power);
     DRAW_SETTING(crsf_rssi_dbm);
     DRAW_SETTING(crsf_snr);
