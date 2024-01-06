@@ -1045,6 +1045,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
 	// @Range: 0 15
 	AP_SUBGROUPINFO(rrpm, "RPM", 62, AP_OSD_Screen, AP_OSD_Setting),
 #endif
+
     // @Param: RADAR_EN
     // @DisplayName: RADAR_EN
     // @Description: Displays iNav Radar info for peer aircraft
@@ -1059,7 +1060,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @DisplayName: RADAR_Y
     // @Description: Vertical position on screen
     // @Range: 0 15
-    AP_SUBGROUPINFO(radar, "RADAR", 62, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(radar, "RADAR", 63, AP_OSD_Screen, AP_OSD_Setting),
 
     AP_GROUPEND
 };
@@ -1834,12 +1835,11 @@ void AP_OSD_Screen::draw_radar(uint8_t x, uint8_t y)
             vertical_distance = 0.0f;
         }
         int32_t angle = wrap_360_cd(loc.get_bearing_to(peer_loc) - ahrs.yaw_sensor);
-        int32_t interval = 36000 / SYMBOL(SYM_ARROW_COUNT);
         if (distance < 2.0f) {
             //avoid fast rotating arrow at small distances
             angle = 0;
         }
-        char arrow = SYMBOL(SYM_ARROW_START) + ((angle + interval / 2) / interval) % SYMBOL(SYM_ARROW_COUNT);
+        char arrow = get_arrow_font_index(angle);
         backend->write(x, y, false, "%c%c", id + 65, arrow);
         draw_distance(x+2, y, distance);
         draw_vdistance(x+1, y+1, vertical_distance);

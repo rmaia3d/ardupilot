@@ -56,7 +56,7 @@ void AP_Radar_MSP::update(void)
 void AP_Radar_MSP::handle_msp(const MSP::msp_radar_pos_message_t &pkt)
 {
     // record peer state
-    uint8_t id = pkt.radar_no;
+    uint8_t id = pkt.radar_no - 1U;
     peers[id].radar_no = pkt.radar_no;
     peers[id].state = pkt.state;
     peers[id].location = Location(pkt.lat, pkt.lon, pkt.alt, Location::AltFrame::ABSOLUTE);
