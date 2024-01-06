@@ -53,9 +53,11 @@ class AP_MSP;
 
 #if AP_OSD_CRSF_EXTENSIONS_ENABLED
 // These options are defined in AP_RCProtocol_config.h
-#define OSD_CRSF_PANELS_ENABLED 1
+#define AP_OSD_CRSF_PANELS_ENABLED 1
+#define AP_OSD_WARN_RSSI_DEFAULT -100   // Default value for OSD RSSI panel warning, in dbm
 #else
-#define OSD_CRSF_PANELS_ENABLED 0
+#define AP_OSD_CRSF_PANELS_ENABLED 0
+#define AP_OSD_WARN_RSSI_DEFAULT 30     // Default value for OSD RSSI panel warning, in %
 #endif
 
 /*
@@ -231,7 +233,7 @@ private:
 #endif
     AP_OSD_Setting sidebars{false, 4, 5};
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
     // CRSF link stats data panels
     AP_OSD_Setting crsf_tx_power{false, 0, 0};
     AP_OSD_Setting crsf_rssi_dbm{false, 0, 0};
@@ -325,7 +327,7 @@ private:
 #endif
     void draw_rngf(uint8_t x, uint8_t y);
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
     // CRSF link stats data panels
 
     bool is_btfl_fonts();
@@ -567,7 +569,7 @@ public:
     AP_Int8 failsafe_scr;
     AP_Int32 button_delay_ms;
 
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
     AP_Int8 warn_lq;
     AP_Int8 warn_snr;
 #endif
@@ -580,7 +582,7 @@ public:
         OPTION_DISABLE_CROSSHAIR = 1U<<4,
         OPTION_BF_ARROWS = 1U<<5,
         OPTION_AVIATION_AH = 1U<<6,
-#if OSD_CRSF_PANELS_ENABLED
+#if AP_OSD_CRSF_PANELS_ENABLED
         OPTION_RF_MODE_ALONG_WITH_LQ = 1U << 20,
 #endif
     };

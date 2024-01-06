@@ -85,11 +85,7 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @Param: _OPTIONS
     // @DisplayName: OSD Options
     // @Description: This sets options that change the display
-#if OSD_CRSF_PANELS_ENABLED
     // @Bitmask: 0:UseDecimalPack, 1:InvertedWindArrow, 2:InvertedAHRoll, 3:Convert feet to miles at 5280ft instead of 10000ft, 4:DisableCrosshair, 5:TranslateArrows, 6:AviationStyleAH, 20:Prefix LQ with RF Mode
-#else
-    // @Bitmask: 0:UseDecimalPack, 1:InvertedWindArrow, 2:InvertedAHRoll, 3:Convert feet to miles at 5280ft instead of 10000ft, 4:DisableCrosshair, 5:TranslateArrows, 6:AviationStyleAH
-#endif
     // @User: Standard
     AP_GROUPINFO("_OPTIONS", 8, AP_OSD, options, OPTION_DECIMAL_PACK),
 
@@ -116,14 +112,14 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @RebootRequired: True
     AP_GROUPINFO("_H_OFFSET", 11, AP_OSD, h_offset, 32),
 
-#if OSD_CRSF_PANELS_ENABLED
     // @Param: _W_RSSI
     // @DisplayName: RSSI warn level (in %)
-    // @Description: Set level at which RSSI item will flash (-dBm)
-    // @Range: -128 0
+    // @Description: Set level at which RSSI item will flash (in % or dBm if applicable)
+    // @Range: -128 100
     // @User: Standard
-    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, -100),
+    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, AP_OSD_WARN_RSSI_DEFAULT),
 
+#if AP_OSD_CRSF_PANELS_ENABLED
     // @Param: _W_LQ
     // @DisplayName: CRSF LQ warn level (in %)
     // @Description: Set level at which CRSF_LQ item will flash (%)
@@ -137,13 +133,6 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @Range: -20 10
     // @User: Standard
     AP_GROUPINFO("_W_SNR", 34, AP_OSD, warn_snr, 0),
-#else
-    // @Param: _W_RSSI
-    // @DisplayName: RSSI warn level (in %)
-    // @Description: Set level at which RSSI item will flash (%)
-    // @Range: 0 99
-    // @User: Standard
-    AP_GROUPINFO("_W_RSSI", 12, AP_OSD, warn_rssi, 30),
 #endif
 
     // @Param: _W_NSAT
