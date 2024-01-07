@@ -546,12 +546,21 @@ void AP_RCProtocol_CRSF::process_link_stats_frame(const void* data)
 
 #if AP_OSD_CRSF_EXTENSIONS_ENABLED
     // Populate the extra data items
-    _link_status.rssi_dbm = rssi_dbm;
-    _link_status.tx_power = link->uplink_tx_power < sizeof(AP_RCProtocol_CRSF::tx_powers)
-                                ? AP_RCProtocol_CRSF::tx_powers[link->uplink_tx_power]
-                                : -1;
-    _link_status.snr = link->uplink_snr;
-    _link_status.active_antenna = link->active_antenna;    
+    if(link->uplink_status > 0) {
+        _link_status.rssi_dbm = rssi_dbm;
+        _link_status.tx_power = link->uplink_tx_power < sizeof(AP_RCProtocol_CRSF::tx_powers)
+                                    ? AP_RCProtocol_CRSF::tx_powers[link->uplink_tx_power]
+                                    : -1;
+        _link_status.snr = link->uplink_snr;
+        _link_status.active_antenna = link->active_antenna;
+    }
+    else {
+        // This means LQ is zero, so set all values to "no signal" state
+        _link_status.rssi_dbm = -1;
+        _link_status.tx_power = -1;
+        _link_status.snr = INT8_MIN;
+        _link_status.active_antenna = -1;
+    }
 #endif
 }
 
