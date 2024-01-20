@@ -98,6 +98,7 @@ BUILD_OPTIONS = [
     Feature('OSD', 'PLUSCODE', 'HAL_PLUSCODE_ENABLE', 'Enable PlusCode', 0, 'OSD'),
     Feature('OSD', 'OSD_PARAM', 'OSD_PARAM_ENABLED', 'Enable OSD param', 0, 'OSD'),
     Feature('OSD', 'OSD_SIDEBARS', 'HAL_OSD_SIDEBAR_ENABLE', 'Enable Scrolling Sidebars', 0, 'OSD'),
+    Feature('OSD', 'OSD_CRSF_LINK_STATS', 'AP_OSD_CRSF_EXTENSIONS_ENABLED', 'Enable OSD panels for CRSF expanded link stats data', 0, "OSD,RC_CRSF"),
 
     Feature('VTX', 'VIDEO_TX', 'AP_VIDEOTX_ENABLED', 'Enable VideoTX control', 0, None),
     Feature('VTX', 'SMARTAUDIO', 'AP_SMARTAUDIO_ENABLED', 'Enable SmartAudio VTX Contol', 0, "VIDEO_TX"),
@@ -253,8 +254,7 @@ BUILD_OPTIONS = [
     Feature('Other', 'ADVANCED_FAILSAFE', 'AP_ADVANCEDFAILSAFE_ENABLED', 'Enable Advanced Failsafe features', 0, None),
     Feature('Other', 'SDCARD_MISSION', 'AP_SDCARD_STORAGE_ENABLED', 'Enable storing mission on microSD cards', 0, None),
     Feature('Other', 'COMPASS_CAL', 'COMPASS_CAL_ENABLED', 'Enable "tumble" compass calibration', 0, None),
-    Feature('Other', 'DRONECAN_SERIAL', 'AP_DRONECAN_SERIAL_ENABLED', 'Enable DroneCAN virtual serial ports', 0, None),
-    Feature('Other', 'OSD_CRSF_LINK_STATS', 'AP_OSD_CRSF_EXTENSIONS_ENABLED', 'Enable OSD panels for CRSF link stats data', 0, "RC_CRSF"),
+    Feature('Other', 'DRONECAN_SERIAL', 'AP_DRONECAN_SERIAL_ENABLED', 'Enable DroneCAN virtual serial ports', 0, None),    
 
     # MAVLink section for mavlink features and/or message handling,
     # rather than for e.g. mavlink-based sensor drivers
