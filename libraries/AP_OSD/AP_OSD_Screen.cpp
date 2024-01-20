@@ -1062,86 +1062,86 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     AP_GROUPINFO("FONT", 4, AP_OSD_Screen, font_index, 0),
 #endif
 
-#if AP_OSD_CRSF_PANELS_ENABLED
-    // @Param: CRSF_PWR_EN
-    // @DisplayName: CRSF_PWR_EN
+#if AP_OSD_CRSF_PANELS_ENABLED      // Parameter and item names are prefixed XF to comply with 16 char limit
+    // @Param: XF_PWR_EN
+    // @DisplayName: XF_PWR_EN
     // @Description: Displays the TX power when using the CRSF RC protocol
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSF_PWR_X
-    // @DisplayName: CRSF_PWR_X
+    // @Param: XF_PWR_X
+    // @DisplayName: XF_PWR_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSF_PWR_Y
-    // @DisplayName: CRSF_PWR_Y
+    // @Param: XF_PWR_Y
+    // @DisplayName: XF_PWR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_tx_power, "CRSF_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_tx_power, "XF_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSFRSSI_EN
-    // @DisplayName: CRSFRSSI_EN
+    // @Param: XF_RSSI_EN
+    // @DisplayName: XF_RSSI_EN
     // @Description: Displays RC signal strength in dBm for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSFRSSI_X
-    // @DisplayName: CRSFRSSI_X
+    // @Param: XF_RSSI_X
+    // @DisplayName: XF_RSSI_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSFRSSI_Y
-    // @DisplayName: CRSFRSSI_Y
+    // @Param: XF_RSSI_Y
+    // @DisplayName: XF_RSSI_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_rssi_dbm, "CRSFRSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_rssi_dbm, "XF_RSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSF_SNR_EN
-    // @DisplayName: CRSF_SNR_EN
+    // @Param: XF_SNR_EN
+    // @DisplayName: XF_SNR_EN
     // @Description: Displays RC signal to noise ratio in dB for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSF_SNR_X
-    // @DisplayName: CRSF_SNR_X
+    // @Param: XF_SNR_X
+    // @DisplayName: XF_SNR_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSF_SNR_Y
-    // @DisplayName: CRSF_SNR_Y
+    // @Param: XF_SNR_Y
+    // @DisplayName: XF_SNR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_snr, "CRSF_SNR", 53, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_snr, "XF_SNR", 53, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSF_ANT_EN
-    // @DisplayName: CRSF_ANT_EN
+    // @Param: XF_ANT_EN
+    // @DisplayName: XF_ANT_EN
     // @Description: Displays the current active antenna for CRSF
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSF_ANT_X
-    // @DisplayName: CRSF_ANT_X
+    // @Param: XF_ANT_X
+    // @DisplayName: XF_ANT_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSF_ANT_Y
-    // @DisplayName: CRSF_ANT_Y
+    // @Param: XF_ANT_Y
+    // @DisplayName: XF_ANT_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_active_antenna, "CRSF_ANT", 52, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_active_antenna, "XF_ANT", 52, AP_OSD_Screen, AP_OSD_Setting),
 
-    // @Param: CRSF_LQ_EN
-    // @DisplayName: CRSF_LQ_EN
+    // @Param: XF_LQ_EN
+    // @DisplayName: XF_LQ_EN
     // @Description: Displays the CRSF link quality (uplink, 0 to 100%) and also RF mode if bit 20 of OSD_OPTIONS is set
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: CRSF_LQ_X
-    // @DisplayName: CRSF_LQ_X
+    // @Param: XF_LQ_X
+    // @DisplayName: XF_LQ_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: CRSF_LQ_Y
-    // @DisplayName: CRSF_LQ_Y
+    // @Param: XF_LQ_Y
+    // @DisplayName: XF_LQ_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_lq, "CRSF_LQ", 56, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_lq, "XF_LQ", 56, AP_OSD_Screen, AP_OSD_Setting),
 #endif
 
     AP_GROUPEND
