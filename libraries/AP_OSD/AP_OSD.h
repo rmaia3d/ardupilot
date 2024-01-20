@@ -576,7 +576,7 @@ public:
         OPTION_BF_ARROWS = 1U<<5,
         OPTION_AVIATION_AH = 1U<<6,
 #if AP_OSD_CRSF_PANELS_ENABLED
-        OPTION_RF_MODE_ALONG_WITH_LQ = 1U << 20,
+        OPTION_RF_MODE_ALONG_WITH_LQ = 1U<<7,
 #endif
     };
 
