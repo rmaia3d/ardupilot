@@ -536,7 +536,8 @@ public:
         OPTION_INVERTED_AH_ROLL = 1U<<2,
         OPTION_IMPERIAL_MILES = 1U<<3,
         OPTION_DISABLE_CROSSHAIR = 1U<<4,
-        OPTION_BF_ARROWS = 1U<<5,
+        OPTION_BF_ARROWS = 1U<<5,        
+        OPTION_WIDE_SIDEBAR = 1U<<8,
     };
 
     enum {
