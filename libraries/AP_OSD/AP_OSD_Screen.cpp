@@ -1077,7 +1077,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @DisplayName: XF_PWR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_tx_power, "XF_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_tx_power, "XF_PWR", 5, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: XF_RSSI_EN
     // @DisplayName: XF_RSSI_EN
@@ -1093,7 +1093,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @DisplayName: XF_RSSI_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_rssi_dbm, "XF_RSSI", 54, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_rssi_dbm, "XF_RSSI", 6, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: XF_SNR_EN
     // @DisplayName: XF_SNR_EN
@@ -1109,7 +1109,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @DisplayName: XF_SNR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_snr, "XF_SNR", 53, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_snr, "XF_SNR", 7, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: XF_ANT_EN
     // @DisplayName: XF_ANT_EN
@@ -1125,7 +1125,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @DisplayName: XF_ANT_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_active_antenna, "XF_ANT", 52, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_active_antenna, "XF_ANT", 8, AP_OSD_Screen, AP_OSD_Setting),
 
     // @Param: XF_LQ_EN
     // @DisplayName: XF_LQ_EN
@@ -1141,7 +1141,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     // @DisplayName: XF_LQ_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(crsf_lq, "XF_LQ", 56, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(crsf_lq, "XF_LQ", 9, AP_OSD_Screen, AP_OSD_Setting),
 #endif
 
     AP_GROUPEND
