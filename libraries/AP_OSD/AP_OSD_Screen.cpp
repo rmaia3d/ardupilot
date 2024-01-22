@@ -1039,6 +1039,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
 	// @Range: 0 15
 	AP_SUBGROUPINFO(rrpm, "RPM", 62, AP_OSD_Screen, AP_OSD_Setting),
 #endif
+
     // @Param: RADAR_EN
     // @DisplayName: RADAR_EN
     // @Description: Displays iNav Radar info for peer aircraft
@@ -1053,7 +1054,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @DisplayName: RADAR_Y
     // @Description: Vertical position on screen
     // @Range: 0 15
-    AP_SUBGROUPINFO(radar, "RADAR", 62, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(radar, "RADAR", 63, AP_OSD_Screen, AP_OSD_Setting),
 
     AP_GROUPEND
 };
