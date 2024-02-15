@@ -581,6 +581,8 @@ public:
 #if AP_OSD_CRSF_PANELS_ENABLED
         OPTION_RF_MODE_ALONG_WITH_LQ = 1U<<7,
 #endif
+        OPTION_WIDE_SIDEBAR = 1U<<8,
+
     };
 
     enum {
