@@ -181,6 +181,23 @@ class ExtractFeatures(object):
             ('AP_DRONECAN_HOBBYWING_ESC_ENABLED', 'AP_UAVCAN::hobbywing_ESC_update'),
 
             ('AP_SDCARD_STORAGE_ENABLED', 'StorageAccess::attach_file'),
+            ('AP_MAVLINK_AUTOPILOT_VERSION_REQUEST_ENABLED', 'GCS_MAVLINK::handle_send_autopilot_version'),
+            ('AP_MAVLINK_MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES_ENABLED', 'GCS_MAVLINK::handle_command_request_autopilot_capabilities'),  # noqa
+            ('AP_MAVLINK_MSG_RELAY_STATUS_ENABLED', 'GCS_MAVLINK::send_relay_status'),
+            ('AP_MAVLINK_BATTERY2_ENABLED', 'GCS_MAVLINK::send_battery2'),
+            ('AP_MAVLINK_MSG_MOUNT_CONTROL_ENABLED', 'AP_Mount::handle_mount_control'),
+            ('AP_MAVLINK_MSG_MOUNT_CONFIGURE_ENABLED', 'AP_Mount::handle_mount_configure'),
+            ('AP_MAVLINK_MSG_DEVICE_OP_ENABLED', 'GCS_MAVLINK::handle_device_op_write'),
+            ('AP_MAVLINK_SERVO_RELAY_ENABLED', 'GCS_MAVLINK::handle_servorelay_message'),
+            ('AP_MAVLINK_MSG_SERIAL_CONTROL_ENABLED', 'GCS_MAVLINK::handle_serial_control'),
+            ('AP_MAVLINK_MSG_MISSION_REQUEST_ENABLED', 'GCS_MAVLINK::handle_mission_request\b'),
+            ('AP_DRONECAN_HIMARK_SERVO_SUPPORT', 'AP_DroneCAN::SRV_send_himark'),
+            ('AP_DRONECAN_HOBBYWING_ESC_SUPPORT', 'AP_DroneCAN::hobbywing_ESC_update'),
+            ('COMPASS_CAL_ENABLED', 'CompassCalibrator::stop'),
+            ('AP_TUNING_ENABLED', 'AP_Tuning::check_input'),
+            ('AP_DRONECAN_SERIAL_ENABLED', 'AP_DroneCAN_Serial::update'),
+            ('AP_SERIALMANAGER_IMUOUT_ENABLED', 'AP_InertialSensor::send_uart_data'),
+            ('AP_OSD_CRSF_EXTENSIONS_ENABLED', r'AP_OSD_Screen::draw_crsf_tx_power'),
         ]
 
     def progress(self, msg):
