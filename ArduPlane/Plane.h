@@ -77,6 +77,7 @@
 #include <AP_Rally/AP_Rally.h>
 
 #include <AP_OpticalFlow/AP_OpticalFlow.h>     // Optical Flow library
+#include <AP_Radar/AP_Radar.h>     // iNav Radar
 #include <AP_Parachute/AP_Parachute.h>
 #include <AP_ADSB/AP_ADSB.h>
 #include <AP_ICEngine/AP_ICEngine.h>
@@ -190,6 +191,8 @@ private:
 
     // flight modes convenience array
     AP_Int8 *flight_modes = &g.flight_mode1;
+    const uint8_t num_flight_modes = 6;
+    const uint8_t num_ext_flight_modes = 12;
 
     AP_FixedWing::Rangefinder_State rangefinder_state;
 
@@ -242,6 +245,11 @@ private:
 #if AP_OPTICALFLOW_ENABLED
     // Optical flow sensor
     AP_OpticalFlow optflow;
+#endif
+
+#if AP_RADAR_ENABLED
+    // iNav Radar
+    AP_Radar radar;
 #endif
 
     // Rally Ponints

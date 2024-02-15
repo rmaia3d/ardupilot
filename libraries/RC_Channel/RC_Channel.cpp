@@ -440,10 +440,38 @@ bool RC_Channel::read_6pos_switch(int8_t& position)
     return true;
 }
 
-void RC_Channel::read_mode_switch()
+// read a mode switch in extended mode (up to 12 positions, for now)
+bool RC_Channel::read_extended_mode_switch(int8_t& position)
+{
+    // calculate position of 12 pos switch
+    const uint16_t pulsewidth = get_radio_in();
+    if (pulsewidth <= RC_MIN_LIMIT_PWM || pulsewidth >= RC_MAX_LIMIT_PWM) {
+        return false;  // This is an error condition
+    }
+
+    // Determine the total pulse width range amd step for each position  
+    const int16_t pulsestep = (get_radio_max() - get_radio_min()) / 12U;    // Assuming 12 max positions
+
+    position = (pulsewidth - get_radio_min()) / pulsestep;
+
+    if (!debounce_completed(position)) {
+        return false;
+    }
+
+    return true;
+}
+
+void RC_Channel::read_mode_switch(bool extended)
 {
     int8_t position;
-    if (read_6pos_switch(position)) {
+    bool changed = false;
+    if(extended) {
+        changed = read_extended_mode_switch(position);
+    } else {
+        changed = read_6pos_switch(position);
+    }
+
+    if (changed) {
         // set flight mode and simple mode setting
         mode_switch_changed(modeswitch_pos_t(position));
     }

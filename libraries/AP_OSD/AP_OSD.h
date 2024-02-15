@@ -32,6 +32,7 @@
 #include <GCS_MAVLink/GCS_MAVLink.h>
 #endif
 #include <AC_Fence/AC_Fence_config.h>
+#include <AP_RCProtocol/AP_RCProtocol_config.h>
 
 class AP_OSD_Backend;
 class AP_MSP;
@@ -47,7 +48,18 @@ class AP_MSP;
 #define PARAM_INDEX(key, idx, group) (uint32_t(uint32_t(key) << 23 | uint32_t(idx) << 18 | uint32_t(group)))
 #define PARAM_TOKEN_INDEX(token) PARAM_INDEX(AP_Param::get_persistent_key(token.key), token.idx, token.group_element)
 
-#define AP_OSD_NUM_SYMBOLS 91
+#define AP_OSD_NUM_SYMBOLS 107
+#define OSD_MAX_INSTANCES 2
+
+#if AP_OSD_CRSF_EXTENSIONS_ENABLED
+// These options are defined in AP_RCProtocol_config.h
+#define AP_OSD_CRSF_PANELS_ENABLED 1
+#define AP_OSD_WARN_RSSI_DEFAULT -100   // Default value for OSD RSSI panel warning, in dbm
+#else
+#define AP_OSD_CRSF_PANELS_ENABLED 0
+#define AP_OSD_WARN_RSSI_DEFAULT 30     // Default value for OSD RSSI panel warning, in %
+#endif
+
 /*
   class to hold one setting
  */
@@ -216,10 +228,20 @@ private:
     AP_OSD_Setting hgt_abvterr{false, 23, 7};
     AP_OSD_Setting fence{false, 14, 9};
     AP_OSD_Setting rngf;
+    AP_OSD_Setting radar;
 #if HAL_PLUSCODE_ENABLE
     AP_OSD_Setting pluscode;
 #endif
     AP_OSD_Setting sidebars{false, 4, 5};
+
+#if AP_OSD_CRSF_PANELS_ENABLED
+    // CRSF link stats data panels
+    AP_OSD_Setting crsf_tx_power{false, 0, 0};
+    AP_OSD_Setting crsf_rssi_dbm{false, 0, 0};
+    AP_OSD_Setting crsf_snr{false, 0, 0};
+    AP_OSD_Setting crsf_active_antenna{false, 0, 0};
+    AP_OSD_Setting crsf_lq{false, 0, 0};
+#endif
 
     // MSP OSD only
     AP_OSD_Setting crosshair;
@@ -254,6 +276,7 @@ private:
     void draw_gspeed(uint8_t x, uint8_t y);
     void draw_horizon(uint8_t x, uint8_t y);
     void draw_home(uint8_t x, uint8_t y);
+    void draw_radar(uint8_t x, uint8_t y);
     void draw_throttle(uint8_t x, uint8_t y);
     void draw_heading(uint8_t x, uint8_t y);
 #ifdef HAL_OSD_SIDEBAR_ENABLE
@@ -272,6 +295,7 @@ private:
     void draw_speed(uint8_t x, uint8_t y, float angle_rad, float magnitude);
     void draw_distance(uint8_t x, uint8_t y, float distance);
     char get_arrow_font_index (int32_t angle_cd);
+    void draw_vdistance(uint8_t x, uint8_t y, float distance);
 #if HAL_WITH_ESC_TELEM
     void draw_esc_temp(uint8_t x, uint8_t y);
     void draw_esc_rpm(uint8_t x, uint8_t y);
@@ -305,6 +329,17 @@ private:
     void draw_fence(uint8_t x, uint8_t y);
 #endif
     void draw_rngf(uint8_t x, uint8_t y);
+
+#if AP_OSD_CRSF_PANELS_ENABLED
+    // CRSF link stats data panels
+    bool is_btfl_fonts();
+    void draw_tx_power(uint8_t x, uint8_t y, int16_t value);
+    void draw_crsf_tx_power(uint8_t x, uint8_t y);
+    void draw_crsf_rssi_dbm(uint8_t x, uint8_t y);
+    void draw_crsf_snr(uint8_t x, uint8_t y);
+    void draw_crsf_active_antenna(uint8_t x, uint8_t y);    
+    void draw_crsf_lq(uint8_t x, uint8_t y);
+#endif
 
     struct {
         bool load_attempted;
@@ -530,13 +565,22 @@ public:
     AP_Int8 failsafe_scr;
     AP_Int32 button_delay_ms;
 
+#if AP_OSD_CRSF_PANELS_ENABLED
+    AP_Int8 warn_lq;
+    AP_Int8 warn_snr;
+#endif
+
     enum {
         OPTION_DECIMAL_PACK = 1U<<0,
         OPTION_INVERTED_WIND = 1U<<1,
         OPTION_INVERTED_AH_ROLL = 1U<<2,
         OPTION_IMPERIAL_MILES = 1U<<3,
         OPTION_DISABLE_CROSSHAIR = 1U<<4,
-        OPTION_BF_ARROWS = 1U<<5,        
+        OPTION_BF_ARROWS = 1U<<5,
+        OPTION_AVIATION_AH = 1U<<6,
+#if AP_OSD_CRSF_PANELS_ENABLED
+        OPTION_RF_MODE_ALONG_WITH_LQ = 1U<<7,
+#endif
         OPTION_WIDE_SIDEBAR = 1U<<8,
     };
 
