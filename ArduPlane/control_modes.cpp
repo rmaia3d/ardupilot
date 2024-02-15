@@ -128,6 +128,14 @@ void Plane::read_control_switch()
             return;
         }
 
+        uint8_t max_number_of_modes =
+            g.flight_modes_extended.get() == 1 ? plane.num_ext_flight_modes : plane.num_flight_modes;
+
+        if (switchPosition > (max_number_of_modes - 1)) {
+            // Avoid memory spill in modes pointer arithmetic
+            return;
+        }
+
         set_mode_by_number((enum Mode::Number)flight_modes[switchPosition].get(), ModeReason::RC_COMMAND);
 
         oldSwitchPosition = switchPosition;
@@ -140,13 +148,31 @@ void Plane::read_control_switch()
 uint8_t Plane::readSwitch(void) const
 {
     uint16_t pulsewidth = RC_Channels::get_radio_in(g.flight_mode_channel - 1);
-    if (pulsewidth <= 900 || pulsewidth >= 2200) return 255;            // This is an error condition
-    if (pulsewidth <= 1230) return 0;
-    if (pulsewidth <= 1360) return 1;
-    if (pulsewidth <= 1490) return 2;
-    if (pulsewidth <= 1620) return 3;
-    if (pulsewidth <= 1749) return 4;              // Software Manual
-    return 5;                                                           // Hardware Manual
+    bool extended = (g.flight_modes_extended.get() == 1);
+
+    if (extended) {
+        // calculate position of 12 pos switch        
+        if (pulsewidth <= RC_Channel::RC_MIN_LIMIT_PWM || pulsewidth >= RC_Channel::RC_MAX_LIMIT_PWM) {
+            return 255;  // This is an error condition
+        }
+
+        // Determine the total pulse width range amd step for each position
+        RC_Channel *c = RC_Channels_Plane::rc_channel(g.flight_mode_channel - 1);
+        const int16_t pulsestep = (c->get_radio_max() - c->get_radio_min()) / plane.num_ext_flight_modes;
+
+        int8_t pos = (pulsewidth - c->get_radio_min()) / pulsestep;
+        return pos >= 0 ? pos : 255;     // Don't return negative numbers
+    }
+    else {
+        if (pulsewidth <= 900 || pulsewidth >= 2200)
+            return 255; // This is an error condition
+        if (pulsewidth <= 1230) return 0;
+        if (pulsewidth <= 1360) return 1;
+        if (pulsewidth <= 1490) return 2;
+        if (pulsewidth <= 1620) return 3;
+        if (pulsewidth <= 1749) return 4;              // Software Manual
+        return 5;                                                           // Hardware Manual
+    }
 }
 
 void Plane::reset_control_switch()

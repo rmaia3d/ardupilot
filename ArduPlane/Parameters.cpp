@@ -489,12 +489,56 @@ const AP_Param::Info Plane::var_info[] = {
     // @Description: Flight mode for switch position 6 (1750 to 2049)
     GSCALAR(flight_mode6,           "FLTMODE6",       FLIGHT_MODE_6),
 
+    // @Param: FLTMODE7
+    // @DisplayName: FlightMode7
+    // @Description: Flight mode for switch position 7
+    // @Values: 0:Manual,1:CIRCLE,2:STABILIZE,3:TRAINING,4:ACRO,5:FBWA,6:FBWB,7:CRUISE,8:AUTOTUNE,10:Auto,11:RTL,12:Loiter,13:TAKEOFF,14:AVOID_ADSB,15:Guided,17:QSTABILIZE,18:QHOVER,19:QLOITER,20:QLAND,21:QRTL,22:QAUTOTUNE,23:QACRO,24:THERMAL,25:Loiter to QLand
+    // @User: Advanced
+    GSCALAR(flight_mode7,           "FLTMODE7",       FLIGHT_MODE_7),
+
+    // @Param: FLTMODE8
+    // @CopyFieldsFrom: FLTMODE7
+    // @DisplayName: FlightMode8
+    // @Description: Flight mode for switch position 8
+    GSCALAR(flight_mode8,           "FLTMODE8",       FLIGHT_MODE_8),
+
+    // @Param: FLTMODE9
+    // @CopyFieldsFrom: FLTMODE7
+    // @DisplayName: FlightMode9
+    // @Description: Flight mode for switch position 9
+    GSCALAR(flight_mode9,           "FLTMODE9",       FLIGHT_MODE_9),
+
+    // @Param: FLTMODE10
+    // @CopyFieldsFrom: FLTMODE7
+    // @DisplayName: FlightMode10
+    // @Description: Flight mode for switch position 10
+    GSCALAR(flight_mode10,           "FLTMODE10",       FLIGHT_MODE_10),
+
+    // @Param: FLTMODE11
+    // @CopyFieldsFrom: FLTMODE7
+    // @DisplayName: FlightMode11
+    // @Description: Flight mode for switch position 11
+    GSCALAR(flight_mode11,           "FLTMODE11",       FLIGHT_MODE_11),
+
+    // @Param: FLTMODE12
+    // @CopyFieldsFrom: FLTMODE7
+    // @DisplayName: FlightMode12
+    // @Description: Flight mode for switch position 12
+    GSCALAR(flight_mode12,           "FLTMODE12",       FLIGHT_MODE_12),
+
     // @Param: INITIAL_MODE
     // @DisplayName: Initial flight mode
     // @Description: This selects the mode to start in on boot. This is useful for when you want to start in AUTO mode on boot without a receiver.
     // @CopyValuesFrom: FLTMODE1
     // @User: Advanced
     GSCALAR(initial_mode,        "INITIAL_MODE",     Mode::Number::MANUAL),
+
+    // @Param: FLTMODE_EXT
+    // @DisplayName: Extended flight modes
+    // @Description: Enables the extra 6 flight modes, bringing the extended total to 12
+    // @Values: 0:Disabled,1:Enabled
+    // @User: Advanced
+    GSCALAR(flight_modes_extended, "FLTMODE_EXT",     0),
 
     // @Param: LIM_ROLL_CD
     // @DisplayName: Maximum Bank Angle
