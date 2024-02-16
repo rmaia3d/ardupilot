@@ -1821,26 +1821,31 @@ void AP_OSD_Screen::draw_radar(uint8_t x, uint8_t y)
     Location loc;
     if (ahrs.get_location(loc) && ap_radar->get_peer_healthy(id)) {
         const Location &peer_loc = ap_radar->get_peer(id).location;
+        uint16_t peer_heading = ap_radar->get_peer(id).heading;
         float distance = loc.get_distance(peer_loc);
         ftype vertical_distance;
         if (!peer_loc.get_alt_distance(loc, vertical_distance)) {
             vertical_distance = 0.0f;
         }
         int32_t angle = wrap_360_cd(loc.get_bearing_to(peer_loc) - ahrs.yaw_sensor);
-        if (distance < 2.0f) {
+        int16_t relative_angle = wrap_360_cd((peer_heading * 100) - ahrs.yaw_sensor);
+        if (distance < 2.0f)
+        {
             //avoid fast rotating arrow at small distances
             angle = 0;
         }
         char arrow = get_arrow_font_index(angle);
-        backend->write(x, y, false, "%c%c", id + 65, arrow);
-        draw_distance(x+2, y, distance);
-        draw_vdistance(x+1, y+1, vertical_distance);
+        char relative_arrow = get_arrow_font_index(relative_angle);
+        backend->write(x, y, false, "%c%c", relative_arrow, id + 65);
+        draw_vdistance(x+2, y, vertical_distance);
+        backend->write(x, y+1, false, "%c", arrow);
+        draw_distance(x+1, y+1, distance);
     } else {
         backend->write(x, y, true, "%c", id + 65);
     }
     if (AP_HAL::millis() - last_peer_change > 2000) {
         id = ap_radar->get_next_healthy_peer(id);
-	last_peer_change = AP_HAL::millis();
+	    last_peer_change = AP_HAL::millis();
     }
 }
 
