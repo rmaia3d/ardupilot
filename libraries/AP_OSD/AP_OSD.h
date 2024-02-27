@@ -150,6 +150,7 @@ private:
     friend class AP_MSP_Telem_DJI;
 
     static const uint8_t message_visible_width = 26;
+    static const uint8_t message_visible_width_wide = 35;
     static const uint8_t message_scroll_time_ms = 200;
     static const uint8_t message_scroll_delay = 5;
 
@@ -552,6 +553,7 @@ public:
         OPTION_DISABLE_CROSSHAIR = 1U<<4,
         OPTION_BF_ARROWS = 1U<<5,
         OPTION_AVIATION_AH = 1U<<6,
+        OPTION_WIDE_MESSAGE = 1U<<8,
     };
 
     enum {
