@@ -1640,10 +1640,12 @@ void AP_OSD_Screen::draw_message(uint8_t x, uint8_t y)
             }
 
             int16_t start_position = 0;
-            //scroll if required
-            //scroll pattern: wait, scroll to the left, wait, scroll to the right
-            if (len > message_visible_width) {
-                int16_t chars_to_scroll = len - message_visible_width;
+            uint8_t msg_width =
+                check_option(AP_OSD::OPTION_WIDE_MESSAGE) ? message_visible_width_wide : message_visible_width;
+            // scroll if required
+            // scroll pattern: wait, scroll to the left, wait, scroll to the right
+            if (len > msg_width) {
+                int16_t chars_to_scroll = len - msg_width;
                 int16_t total_cycles = 2*message_scroll_delay + 2*chars_to_scroll;
                 int16_t current_cycle = (visible_time / message_scroll_time_ms) % total_cycles;
 
@@ -1656,7 +1658,7 @@ void AP_OSD_Screen::draw_message(uint8_t x, uint8_t y)
                     start_position = total_cycles - current_cycle;
                 }
                 start_position = constrain_int16(start_position, 0, chars_to_scroll);
-                int16_t end_position = start_position + message_visible_width;
+                int16_t end_position = start_position + msg_width;
 
                 //ensure array boundaries
                 start_position = MIN(start_position, int(sizeof(buffer)-1));
