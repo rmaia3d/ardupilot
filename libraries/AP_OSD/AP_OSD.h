@@ -160,6 +160,7 @@ private:
     friend class AP_MSP_Telem_DJI;
 
     static const uint8_t message_visible_width = 26;
+    static const uint8_t message_visible_width_wide = 35;
     static const uint8_t message_scroll_time_ms = 200;
     static const uint8_t message_scroll_delay = 5;
 
@@ -592,6 +593,7 @@ public:
 #if AP_OSD_EXTENDED_LNK_STATS
         OPTION_RF_MODE_ALONG_WITH_LQ = 1U<<7,
 #endif
+        OPTION_WIDE_MESSAGE = 1U<<8,
     };
 
     enum {
