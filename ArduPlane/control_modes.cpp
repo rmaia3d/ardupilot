@@ -109,7 +109,11 @@ void RC_Channels_Plane::read_mode_switch()
 
 void RC_Channel_Plane::mode_switch_changed(modeswitch_pos_t new_pos)
 {
-    if (new_pos < 0 || (uint8_t)new_pos > plane.num_flight_modes) {
+    uint8_t max_number_of_modes =
+        plane.g.flight_modes_extended.get() == 1 ? 
+        plane.num_ext_flight_modes : plane.num_flight_modes;
+
+    if (new_pos < 0 || (uint8_t)new_pos > (max_number_of_modes - 1)) {
         // should not have been called
         return;
     }
