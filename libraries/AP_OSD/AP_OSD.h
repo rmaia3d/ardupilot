@@ -160,6 +160,7 @@ private:
     friend class AP_MSP_Telem_DJI;
 
     static const uint8_t message_visible_width = 26;
+    static const uint8_t message_visible_width_wide = 35;
     static const uint8_t message_scroll_time_ms = 200;
     static const uint8_t message_scroll_delay = 5;
 
@@ -581,6 +582,11 @@ public:
     AP_Int8 warn_snr;
 #endif
 
+#if HAL_OSD_SIDEBAR_ENABLE
+    AP_Int8 sidebar_h_offset;
+    AP_Int8 sidebar_v_ext;
+#endif
+
     enum {
         OPTION_DECIMAL_PACK = 1U<<0,
         OPTION_INVERTED_WIND = 1U<<1,
@@ -592,6 +598,7 @@ public:
 #if AP_OSD_EXTENDED_LNK_STATS
         OPTION_RF_MODE_ALONG_WITH_LQ = 1U<<7,
 #endif
+        OPTION_WIDE_MESSAGE = 1U<<8,
     };
 
     enum {

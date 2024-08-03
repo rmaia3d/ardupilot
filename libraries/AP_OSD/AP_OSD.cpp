@@ -85,7 +85,7 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @Param: _OPTIONS
     // @DisplayName: OSD Options
     // @Description: This sets options that change the display
-    // @Bitmask: 0:UseDecimalPack, 1:InvertedWindArrow, 2:InvertedAHRoll, 3:Convert feet to miles at 5280ft instead of 10000ft, 4:DisableCrosshair, 5:TranslateArrows, 6:AviationStyleAH, 7:Prefix LQ with RF Mode
+    // @Bitmask: 0:UseDecimalPack, 1:InvertedWindArrow, 2:InvertedAHRoll, 3:Convert feet to miles at 5280ft instead of 10000ft, 4:DisableCrosshair, 5:TranslateArrows, 6:AviationStyleAH, 7:Prefix LQ with RF Mode, 8:Wider message field
     // @User: Standard
     AP_GROUPINFO("_OPTIONS", 8, AP_OSD, options, OPTION_DECIMAL_PACK),
 
@@ -229,6 +229,22 @@ const AP_Param::GroupInfo AP_OSD::var_info[] = {
     // @User: Standard
     AP_GROUPINFO("_W_SNR", 34, AP_OSD, warn_snr, 0),
 #endif
+
+#if HAL_OSD_SIDEBAR_ENABLE
+    // @Param: _SB_H_OFS
+    // @DisplayName: Sidebar horizontal offset
+    // @Description: Extends the spacing between the sidebar elements by this amount of columns. Positive values increases the width to the right of the screen.
+    // @Range: 0 20
+    // @User: Standard
+    AP_GROUPINFO("_SB_H_OFS", 36, AP_OSD, sidebar_h_offset, 0),
+
+    // @Param: _SB_V_EXT
+    // @DisplayName: Sidebar vertical extension
+    // @Description: Increase of vertical length of the sidebar itens by this amount of lines. Applied equally both above and below the default setting.
+    // @Range: 0 10
+    // @User: Standard
+    AP_GROUPINFO("_SB_V_EXT", 37, AP_OSD, sidebar_v_ext, 0),
+#endif // HAL_OSD_SIDEBAR_ENABLE
 
 #endif //osd enabled
 #if OSD_PARAM_ENABLED
